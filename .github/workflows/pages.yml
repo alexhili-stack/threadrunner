@@ -1,0 +1,54 @@
+name: Build and deploy browser game
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: github-pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: read
+    steps:
+      - uses: actions/checkout@v6
+      - name: Install pinned Godot 4.7.2 and Web template
+        shell: bash
+        run: |
+          mkdir -p .tools/godot
+          curl --fail --location --retry 3 --output .tools/godot-linux.zip https://github.com/godotengine/godot-builds/releases/download/4.7.2-stable/Godot_v4.7.2-stable_linux.x86_64.zip
+          echo 'cadd3204e728a35d3f13adb7fd0d7902636b79f6b95c40c265eb73b6c35329e4  .tools/godot-linux.zip' | sha256sum --check
+          unzip -q .tools/godot-linux.zip -d .tools/godot
+          chmod +x .tools/godot/Godot_v4.7.2-stable_linux.x86_64
+          python3 tools/install_web_template.py
+      - name: Import shared game resources
+        run: .tools/godot/Godot_v4.7.2-stable_linux.x86_64 --headless --path . --editor --import --quit
+      - name: Build static browser player
+        run: python3 tools/build_web.py --godot .tools/godot/Godot_v4.7.2-stable_linux.x86_64
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v4
+        with:
+          path: builds/web
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    outputs:
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

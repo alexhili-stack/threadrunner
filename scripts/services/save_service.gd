@@ -147,6 +147,8 @@ func write_save() -> bool:
 		last_error = "Could not replace save (%s); original file kept." % error_string(error)
 		return false
 	last_error = ""
+	if OS.has_feature("web"):
+		JavaScriptBridge.force_fs_sync()
 	return true
 
 

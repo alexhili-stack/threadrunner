@@ -25,6 +25,7 @@ var complete_pending: bool = false
 var backdrop: Node2D
 var control_hint: Label
 var last_input_controller: bool = false
+var last_input_touch: bool = false
 var previous_best: float = 0.0
 var preview: Control
 var preview_title: Label
@@ -73,6 +74,8 @@ func _ready() -> void:
 	apply_settings()
 	Input.joy_connection_changed.connect(_on_controller_change)
 	show_menu()
+	if OS.has_feature("web"):
+		add_child(preload("res://scripts/services/browser_bridge.gd").new())
 	for arg: String in OS.get_cmdline_user_args():
 		if arg.begins_with("--room="):
 			start_level(clampi(int(arg.trim_prefix("--room=")) - 1, 0, LevelCatalog.COUNT - 1))
@@ -92,7 +95,12 @@ func _ready() -> void:
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_WM_CLOSE_REQUEST:
 		quit_game()
-	if what == NOTIFICATION_APPLICATION_FOCUS_OUT and page == "game" and is_instance_valid(run):
+	if (
+		what == NOTIFICATION_APPLICATION_FOCUS_OUT
+		and not OS.has_feature("web")
+		and page == "game"
+		and is_instance_valid(run)
+	):
 		show_pause()
 
 
@@ -214,9 +222,13 @@ func show_menu() -> void:
 	resume.grab_focus()
 	button("Room select", Vector2(33, 258), show_select, 117)
 	button("Thread lessons", Vector2(158, 258), func() -> void: start_level(40), 117)
-	button("Settings", Vector2(33, 294), func() -> void: show_settings("menu"), 75)
-	button("Credits", Vector2(116, 294), show_credits, 76)
-	button("Quit", Vector2(200, 294), quit_game, 75)
+	if OS.has_feature("web"):
+		button("Settings", Vector2(33, 294), func() -> void: show_settings("menu"), 117)
+		button("Credits", Vector2(158, 294), show_credits, 117)
+	else:
+		button("Settings", Vector2(33, 294), func() -> void: show_settings("menu"), 75)
+		button("Credits", Vector2(116, 294), show_credits, 76)
+		button("Quit", Vector2(200, 294), quit_game, 75)
 	text_at("40 rooms. Five thread lessons.", Vector2(352, 279), 12, MUTED, 270)
 	text_at(
 		(
@@ -320,7 +332,11 @@ func select_preview(index: int) -> void:
 func refresh_control_hint() -> void:
 	if page != "game" or not is_instance_valid(control_hint):
 		return
-	if last_input_controller:
+	if last_input_touch:
+		control_hint.text = (
+			"TOUCH CONTROLS BELOW   /   JUMP RELEASES A GRAPPLE   /   " + "HOLD REWIND TO RETURN"
+		)
+	elif last_input_controller:
 		control_hint.text = (
 			"STICK MOVE   A JUMP   X STITCH   B GRAPPLE   " + "LB REWIND   Y RETRY   START PAUSE"
 		)
@@ -342,6 +358,14 @@ func refresh_control_hint() -> void:
 
 
 func _room_hint() -> String:
+	if last_input_touch:
+		return (
+			level
+			. purpose
+			. replace("E beside", "Stitch beside")
+			. replace("F grabs", "Grapple grabs")
+			. replace("Hold Shift", "Hold Rewind")
+		)
 	return (
 		level
 		. purpose
@@ -356,6 +380,10 @@ func _room_hint() -> String:
 
 
 func quit_game() -> void:
+	if OS.has_feature("web"):
+		saves.write_save()
+		show_menu()
+		return
 	set_process(false)
 	saves.write_save()
 	audio.stop_all(true)
@@ -660,7 +688,12 @@ func _settings_display() -> void:
 		"A brief nudge when the thread breaks.",
 		"Reduce decorative trails, pulses and menu motion."
 	]
-	for i in 3:
+	if OS.has_feature("web"):
+		keys.remove_at(0)
+		names.remove_at(0)
+		details.remove_at(0)
+		text_at("Use Fullscreen above the game to fill your display.", Vector2(36, 258), 10, MUTED)
+	for i in keys.size():
 		var y: float = 130 + i * 51
 		text_at(names[i], Vector2(36, y), 15, INK, 390)
 		text_at(details[i], Vector2(36, y + 24), 10, MUTED, 430)
@@ -707,7 +740,7 @@ func apply_settings() -> void:
 	if is_instance_valid(level):
 		level.reduced_effects = saves.data.settings.reduced_effects
 		level.player.get_node("Visuals").reduced_effects = saves.data.settings.reduced_effects
-	if DisplayServer.get_name() != "headless":
+	if DisplayServer.get_name() != "headless" and not OS.has_feature("web"):
 		DisplayServer.window_set_mode(
 			(
 				DisplayServer.WINDOW_MODE_FULLSCREEN
@@ -745,6 +778,8 @@ func _on_controller_change(_device: int, connected: bool) -> void:
 
 
 func _input(event: InputEvent) -> void:
+	if event is InputEventKey or event is InputEventJoypadButton or event is InputEventJoypadMotion:
+		last_input_touch = false
 	if event is InputEventJoypadButton and event.pressed:
 		last_input_controller = true
 	elif event is InputEventJoypadMotion and absf(event.axis_value) > saves.data.settings.deadzone:
@@ -773,7 +808,7 @@ func _input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed and not event.echo:
 		if event.keycode == KEY_F2:
 			debug = not debug if OS.is_debug_build() else false
-		if event.keycode == KEY_F11:
+		if event.keycode == KEY_F11 and not OS.has_feature("web"):
 			saves.data.settings.fullscreen = not saves.data.settings.fullscreen
 			apply_settings()
 			saves.write_save()

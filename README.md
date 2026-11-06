@@ -4,7 +4,15 @@ Carry the last signal. An original precision platformer with 40 campaign rooms a
 
 ![Threadrunner main menu](docs/screenshots/threadrunner-menu.png)
 
-## Download and play
+## Play in your browser
+
+**[Play Threadrunner — no download needed](https://alexhili-stack.github.io/threadrunner/)**
+
+Click **Play in browser**, then choose **Begin the run** or **Thread lessons**. Keyboard, controller and touch controls are available. Use the player's Fullscreen button for a larger view. Progress saves in the same browser on the same device; clearing site data removes it. The first load is approximately 42 MB and requires WebGL 2.
+
+Send friends the play link above. They do not need Godot, an installation or a GitHub account. Browser build and deployment instructions are in [Browser build](docs/web_build.md).
+
+## Windows download
 
 **[Download Threadrunner for Windows x64](https://github.com/alexhili-stack/threadrunner/releases/latest/download/Threadrunner-Windows.zip)**
 
@@ -14,7 +22,7 @@ Carry the last signal. An original precision platformer with 40 campaign rooms a
 
 No Godot editor, Python, installation or GitHub account is needed to play. Choose **Thread lessons** from the main menu to learn the tools. The green **Code → Download ZIP** button contains source code; use the Windows release asset to play.
 
-To share with friends, send the release link or the complete Windows ZIP. Sending just the EXE leaves out the game data. Progress saves locally on each player's computer.
+For offline play, send the complete Windows ZIP. Sending just the EXE leaves out the game data. Windows progress saves locally and is separate from browser progress.
 
 ## Controls
 
@@ -28,7 +36,7 @@ To share with friends, send the release link or the complete Windows ZIP. Sendin
 | Retry | R | Y |
 | Pause / back | Esc | Start / B in menus |
 
-F11 toggles fullscreen. Settings include keyboard remapping, stick deadzone, separate audio levels and reduced decorative effects. Rewind follows up to six seconds of your real trail; time and hazards continue. Gold fragments count when you finish the same attempt.
+F11 toggles fullscreen in Windows; the browser player has a Fullscreen button. Settings include keyboard remapping, stick deadzone, separate audio levels and reduced decorative effects. Rewind follows up to six seconds of your real trail; time and hazards continue. Gold fragments count when you finish the same attempt.
 
 ![Swinging on a thread](docs/screenshots/threadrunner-grapple.png)
 
@@ -42,6 +50,6 @@ See [thread mechanics](docs/thread_tool.md), [architecture](docs/architecture.md
 
 ## Status and credits
 
-Version 1.2.0 is a standalone Windows x64 local build. macOS, Linux and Steam Deck builds are not provided. Automated verification passed 46 unit tests, 255 route clears, 33 graphical checks, a 917-second soak and standalone save/relaunch checks. Human difficulty, physical-controller feel and listening remain playtest tasks.
+The browser edition exports the shared game with Godot 4.7.2. Version 1.2.0 remains available as a standalone Windows x64 release. Native macOS, Linux and Steam Deck builds are not provided. See [verified QA results](docs/public_qa.md) for executed checks and their limits. Human difficulty, physical-controller feel and listening remain playtest tasks.
 
 Design and implementation: Alexander Hili with Codex. Original vector art and synthesized audio. Barlow Condensed and Manrope fonts use SIL OFL 1.1. Godot, GdUnit4 and gdtoolkit retain their own licenses in `third_party`. The project's original code/assets do not yet have a separately specified open-source license.
