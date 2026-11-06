@@ -172,3 +172,43 @@ func test_history_is_bounded_to_six_seconds() -> void:
 	await _steps(130)
 	assert_int(room.thread_tool.history.size()).is_equal(0)
 	assert_int(run.state).is_equal(RunController.State.PLAYING)
+
+
+func test_empty_rewind_cannot_suspend_an_airborne_player() -> void:
+	_load_room(43)
+	room.player.reset_for_attempt(Vector2(140, 230))
+	await _steps(3)
+	room.thread_tool.history.clear()
+	var start_y: float = room.player.position.y
+	room.player.drive_tools(false, false, true)
+	await _steps(18)
+	assert_float(room.player.position.y).is_greater(start_y + 20)
+
+
+func test_spent_rewind_requires_release_before_reusing_new_trail() -> void:
+	_load_room(43)
+	room.player.drive_input(1, false, false)
+	await _steps(20)
+	room.thread_tool.history.clear()
+	room.player.drive_tools(false, false, true)
+	await _steps(8)
+	assert_bool(room.thread_tool.rewinding).is_false()
+	assert_int(room.thread_tool.history.size()).is_equal(0)
+	room.player.drive_tools(false, false, false)
+	await _steps(8)
+	assert_int(room.thread_tool.history.size()).is_greater(3)
+	room.player.drive_tools(false, false, true)
+	await _steps(1)
+	assert_bool(room.thread_tool.rewinding).is_true()
+	run.restart()
+	assert_bool(room.thread_tool.rewind_exhausted).is_false()
+
+
+func test_stitch_preview_matches_the_bridge_that_will_be_woven() -> void:
+	room.player.reset_for_attempt(Vector2(150, 289))
+	await _steps(3)
+	assert_int(room.thread_tool.stitch_candidate).is_equal(0)
+	assert_bool(room.thread_tool.relay_powered()).is_false()
+	room.player.drive_tools(true)
+	await _steps(2)
+	assert_bool(room.thread_tool.stitched[0]).is_true()

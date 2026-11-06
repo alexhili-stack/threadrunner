@@ -112,3 +112,9 @@ The rewind meter is a custom flat rail at the upper right, with the dimensions r
 - Don't add busy grids behind UI text or hide focus.
 - Don't cover lesson pit hazards with a bottom prompt strip.
 - Don't copy reference-game assets.
+
+## Browser and tool feedback
+
+The static browser player inherits the same palette and self-hosted fonts. Its single primary action starts the game; instructions stay collapsed and the playfield leads. Pause and Fullscreen are available above the player. Touch controls group movement under the left thumb, jump/retry under the right, and thread tools between them, moving tools to a second row on phones. Targets remain at least 48px high. Resizing adapts controls automatically until the player makes an explicit visibility choice.
+
+Tool feedback describes actual state. A paper square outlines the eligible stitch pair, using the same reach and occlusion rules as the action. Existing round anchor highlights remain. Hints follow current keyboard/controller bindings or touch labels, then change as lesson objectives are achieved. Touch buttons report terminal/anchor availability, active tethers and stored rewind time. Exhausted or blocked rewind requires release before reuse, with an amber instruction in the existing HUD rail. No additional panel covers the playfield.

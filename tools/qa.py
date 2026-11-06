@@ -21,6 +21,9 @@ results=[]
 
 def run(label, command, timeout=180, expected=0, allow_cert=True):
     start=time.monotonic()
+    if label=='ui' and (ART/'ui.json').exists():
+        shutil.copy2(ART/'ui.json',ART/f'ui-before-check-{time.time_ns()}.json')
+        (ART/'ui.json').unlink()
     try:
         done=subprocess.run([str(x) for x in command],cwd=ROOT,env=ENV,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,timeout=timeout)
         output=done.stdout.decode('utf-8',errors='replace')
@@ -28,6 +31,10 @@ def run(label, command, timeout=180, expected=0, allow_cert=True):
         errors=[line for line in output.splitlines() if re.search(r'(^|\s)(SCRIPT ERROR:|ERROR:)',line)]
         if allow_cert:
             errors=[line for line in errors if 'Failed to read the root certificate store' not in line]
+        if label=='ui':
+            checks=json.loads((ART/'ui.json').read_text()) if (ART/'ui.json').exists() else []
+            if len(checks)<33 or any(not item.get('pass',False) for item in checks):
+                errors.append(f'Incomplete or failing graphical report: {len(checks)}/33 checks')
         passed=done.returncode==expected and (not errors or expected!=0)
         result={'name':label,'pass':passed,'exit':done.returncode,'expected':expected,'seconds':round(time.monotonic()-start,3),'errors':errors}
     except (subprocess.TimeoutExpired,OSError) as exc:
@@ -52,10 +59,32 @@ def main():
     p.add_argument('--ui',action='store_true')
     p.add_argument('--export',action='store_true')
     p.add_argument('--recheck-ui',action='store_true',help='Rerun graphical checks and retain the previous result in the audit history')
+    p.add_argument('--recheck-static',action='store_true',help='Rerun formatting and lint, retaining earlier results in the audit history')
     a=p.parse_args()
     engine=a.godot or next((ROOT/'.tools/godot').glob('*console.exe'),None)
     if engine is None:
         print('BLOCKED: provide --godot or run tools/install_tools.py');return 2
+    if a.recheck_static:
+        report_path=ART/'qa_summary.json'
+        if not report_path.exists():
+            print('BLOCKED: a complete QA report is required before a targeted recheck');return 2
+        report=json.loads(report_path.read_text())
+        shutil.copy2(report_path,ART/f'qa-before-static-recheck-{time.time_ns()}.json')
+        for label, module in [('format','gdtoolkit.formatter'),('lint','gdtoolkit.linter')]:
+            previous=next((item for item in report['results'] if item['name']==label),None)
+            if previous is None:
+                print('BLOCKED: previous report has no static checks');return 2
+            log=ART/f'{label}.log'
+            if log.exists(): shutil.copy2(log,ART/f'{label}-before-recheck-{time.time_ns()}.log')
+            command=[PY,'-m',module,*(['--check'] if label=='format' else []),'scripts','tests','tools']
+            current=run(label,command)
+            report.setdefault('rechecks',[]).append({'previous':previous,'current':current,'utc':datetime.now(timezone.utc).isoformat()})
+            report['results']=[current if item['name']==label else item for item in report['results']]
+        report['pass']=all(item['pass'] for item in report['results'])
+        report['utc']=datetime.now(timezone.utc).isoformat()
+        report_path.write_text(json.dumps(report,indent=2))
+        print('QA PASSED' if report['pass'] else 'QA FAILED',flush=True)
+        return 0 if report['pass'] else 1
     if a.recheck_ui:
         report_path=ART/'qa_summary.json'
         if not report_path.exists():
@@ -85,7 +114,7 @@ def main():
     fixed=['--fixed-fps','60'] if a.quick else []
     run('gdunit',godot('gdunit',*fixed,*runner,'-a','res://tests','-rd','res://artifacts/qa-unit'),timeout=180)
     counts=xml_counts(ART/'qa-unit')
-    results.append({'name':'test-discovery','pass':counts['tests']>=46 and counts['failures']==0 and counts['errors']==0,**counts})
+    results.append({'name':'test-discovery','pass':counts['tests']>=49 and counts['failures']==0 and counts['errors']==0,**counts})
     run('failure-probe',godot('probe','--fixed-fps','60',*runner,'-a','res://tests/gameplay/test_setup.gd','-rd','res://artifacts/probe-fail','--','--probe-fail'),expected=100)
     probe=xml_counts(ART/'probe-fail')
     results.append({'name':'failure-propagation','pass':probe['tests']==1 and probe['failures']==1,**probe})

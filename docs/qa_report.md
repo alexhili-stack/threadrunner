@@ -1,3 +1,24 @@
+# Threadrunner browser edition and refinement verification
+
+The browser edition exports the shared Godot 4.7.2 game to single-threaded WebAssembly. The room geometry, stable IDs and `data/movement/default.tres` are unchanged. The Windows 1.2 release below remains a separate frozen artifact.
+
+Executed on 2026-11-06:
+
+- Shared-code checks: 49 unit cases with zero failures/errors, failure/empty-suite probes, 45 scene validation, 85 fixture validation, 255 successful campaign/lesson replay clears and negative attempts passed.
+- The empty-rewind hover regression was reproduced against the actual CharacterBody2D, then fixed. All 13 thread tests pass, including gravity after exhaustion, release before reuse, reset and preview/action agreement.
+- Actual WebAssembly release: 410/410 checks passed. All 45 fragment routes cleared three times with zero deaths; completion pages, restarts, 45 saved IDs, save round trips and development-addon exclusion passed. The opt-in accelerated local verifier retained a 1/60-second physics step. Its maximum record round-trip error was 1.78e-15 seconds.
+- Static browser candidate: 23 files, 41,522,024 bytes before the manifest; no tests, fixtures or native executables. Both browser scripts parse and build/serve/setup/QA Python tools compile.
+- Local Chromium: game boot, native menus, keyboard movement/jump, touch-button movement and pause/resume observed. Browser settings persisted after a fresh reload (mute On); IndexedDB reported persistent storage. Error/warning capture was empty during the checked sessions.
+- Layout inspected at the normal desktop viewport, 390x844 and 844x390. Fullscreen entry was observed. Responsive thumb groups, automatic touch visibility, tool readiness and external lesson objectives were checked. Physical phones, Safari, physical controllers, subjective listening and full screen-reader support are NOT RUN.
+- GitHub Pages: the initial hosted build/export passed; deployment required enabling Pages with GitHub Actions, after which run 42290486960 succeeded. The refinement build is ready for the same workflow; its final deployment result will be recorded after publication.
+- Final canonical report: PASS after the retained targeted static and graphical rechecks. All 33 graphical assertions passed in a fresh report. The real-time headless soak ran 917.099 seconds over 82 room cycles with zero failures.
+
+The first browser verifier run found one early completion-UI assertion while all 135 gameplay clears passed. The verifier now waits until Node._process has handled its pending screen transition; the full 410-check rerun passed without removing an assertion. Both reports are retained in artifacts/web. A touch focus transfer was removed after a held-input check exposed it.
+
+The current full canonical run initially reported a lint limit and a graphical process exited before producing its full report. The return structure was simplified, and tools/qa.py now requires a fresh report containing at least 33 passing graphical checks, preventing early process exits from being accepted. Targeted rechecks preserve prior results and logs in the audit history.
+
+Evidence is retained in artifacts/qa_summary.json, unit XML, artifacts/web/browser-replays.json, artifacts/web/settings-reloaded.json and artifacts/design-audit. The UI review is documented in docs/browser_design_review.md.
+
 # Threadrunner 1.2 — local acceptance
 
 Verified local Windows x64 build: **threadrunner-1.2.0-local**. The game now has a rebuilt native interface and all three requested thread tools, across forty campaign rooms and five new Threadwork lessons.

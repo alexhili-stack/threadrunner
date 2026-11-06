@@ -25,3 +25,9 @@ These five missions are accessible through **Thread lessons** on the main menu. 
 ThreadTool owns bounded history, bridge state, anchor selection and drawing. CharacterBody2D performs swing constraints, jump release and collision-respecting rewind movement. LevelRoot owns authored sockets, stitch pairs, checkpoints, gate evaluation and exit goals. RunController continues to own time, death, pause and completion. Resets clear thread state in place without accumulating nodes. The old movement values are unchanged when the thread tool is inactive.
 
 Save layout revision 3 retains stable IDs, unlocks, fragments and settings; earlier-layout times are archived so new routes do not compete with old physics/tool conditions. New default actions preserve a legacy remap that already used E or F by choosing a spare default key for the new action.
+
+## Rewind recovery and interaction feedback
+
+Holding an empty or obstructed trail no longer suspends the courier. Normal gravity and collision movement continue; release Rewind to start recording a fresh trail, then press it again to return. The HUD reports the release requirement. This uses the same shared movement resource in every room.
+
+Reachable stitch pairs gain a paper outline, using the exact reach and line-of-sight rules of the stitch action. Nearby and tethered prompts follow current bindings, and lesson hints advance with the real objective state. The browser touch controls expose these same states.

@@ -27,7 +27,7 @@ The static output is `builds/web`, including `manifest.json` with the source com
 
 ## Deployment
 
-`.github/workflows/pages.yml` builds on pushes to `main` and can be run manually. It verifies the pinned Linux engine, installs the pinned Web template, imports resources, exports the game and deploys the static artifact with the official GitHub Pages actions. Repository Settings → Pages uses **GitHub Actions** as its publishing source. The existing Windows release remains available separately.
+`.github/workflows/pages.yml` builds on game-source pushes to `main` and can be run manually. Documentation-only pushes are excluded. It verifies the pinned Linux engine, installs the pinned Web template, imports resources, exports the game and deploys the static artifact with the official GitHub Pages actions. Repository Settings → Pages uses **GitHub Actions** as its publishing source. The existing Windows release remains available separately.
 
 ## Verification
 

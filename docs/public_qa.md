@@ -1,3 +1,21 @@
+# Browser edition and refinement verification
+
+| Check | Result |
+|---|---|
+| Shared-code canonical QA | PASS after retained targeted rechecks |
+| GdUnit4 | 49 tests, zero failures/errors |
+| Campaign and lesson replays | 255 successful clears, negative attempts rejected |
+| Browser WebAssembly release | 410 checks passed; all 45 rooms cleared three times with fragments and zero deaths |
+| Browser save round trip | All 45 stable IDs; maximum time difference 1.78e-15 seconds |
+| Fresh browser reload | Saved mute preference retained; persistent IndexedDB available |
+| Native graphical UI | Fresh report: 33 passing checks |
+| Real-time headless stability | 917.099 seconds, 82 room cycles, zero failures |
+| Responsive review | Desktop, 390x844 and 844x390; touch movement and pause observed |
+
+An empty-rewind hover bug was reproduced and fixed without changing the shared movement tuning or room geometry. New tests cover falling after exhaustion, releasing before reuse and stitch-target agreement. A completion-screen verification race was fixed by waiting for rendered UI; all original assertions remained. The first incomplete native graphical process and a lint failure are retained in local audit history; fresh targeted rechecks passed. QA now rejects early graphical exits without a complete report.
+
+Physical phones, Safari, physical controllers, subjective listening and full screen-reader compatibility were not tested. Godot canvas menus have accessibility limits. The existing Windows 1.2 release below is a separate frozen artifact.
+
 # Threadrunner 1.2.0 — verified build
 
 | Check | Result |

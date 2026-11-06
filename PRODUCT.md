@@ -2,7 +2,7 @@
 
 ## Platform
 
-Standalone Windows x64 game, built in Godot 4.7.2. Logical viewport 640 × 360; default window 1280 × 720. Local play and saves; no accounts or network services.
+Godot 4.7.2 game for Windows x64 and browsers. Logical viewport 640 × 360; default native window 1280 × 720. The browser edition runs as single-threaded WebAssembly on GitHub Pages, with responsive touch controls and browser-local saves. Players do not need accounts.
 
 ## Product Purpose
 
@@ -20,4 +20,4 @@ Threadrunner; a warm-white courier, teal scarf/thread/exits, coral danger, gold 
 
 ## Evidence on Hand
 
-Canonical executable checks: tools/qa.py. Current acceptance evidence is recorded in docs/qa_report.md and docs/visual_acceptance_report.md. Reference research and interpretation are in docs/visual_research.md. No publication or account actions are authorized.
+Canonical executable checks: tools/qa.py. Current acceptance evidence is recorded in docs/qa_report.md and docs/visual_acceptance_report.md. Reference research and interpretation are in docs/visual_research.md. The user explicitly requested the public GitHub repository and GitHub Pages browser release; deployment uses that existing repository.

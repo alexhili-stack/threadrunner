@@ -358,6 +358,32 @@ func refresh_control_hint() -> void:
 
 
 func _room_hint() -> String:
+	var tool: ThreadTool = level.thread_tool
+	var stitch_key: String = (
+		"Stitch" if last_input_touch else inputs.label_for("thread_stitch", last_input_controller)
+	)
+	var grapple_key: String = (
+		"Grapple" if last_input_touch else inputs.label_for("thread_grapple", last_input_controller)
+	)
+	var jump_key: String = (
+		"Jump" if last_input_touch else inputs.label_for("jump", last_input_controller)
+	)
+	if tool.grapple_index >= 0:
+		return "%s releases upward. %s drops the thread." % [jump_key, grapple_key]
+	if tool.stitch_candidate >= 0:
+		return (
+			"%s / %s bridge"
+			% [stitch_key, "Release" if tool.stitched[tool.stitch_candidate] else "Weave"]
+		)
+	if tool.candidate >= 0:
+		return "%s / Anchor in reach. Steer to swing." % grapple_key
+	if not level.thread_goal.is_empty():
+		var objective: String = tool.objective_hint()
+		if level.thread_goal in ["stitch", "relay", "all"] and not tool.relay_powered():
+			objective = "%s beside a square terminal weaves a bridge." % stitch_key
+		elif level.thread_goal in ["grapple", "all"] and not tool.has_grappled:
+			objective = "%s grabs a round anchor. %s releases upward." % [grapple_key, jump_key]
+		return objective
 	if last_input_touch:
 		return (
 			level
@@ -857,12 +883,24 @@ func _process(delta: float) -> void:
 			"%.1f s rewind%s"
 			% [float(tool.history.size()) / 60, " / tied" if tool.grapple_index >= 0 else ""]
 		)
+		if tool.rewinding:
+			thread_status.text = "Rewinding / %.1f s" % (float(tool.history.size()) / 60)
+		elif tool.rewind_exhausted:
+			thread_status.text = "Release Rewind"
+		thread_status.add_theme_color_override(
+			"font_color", ThreadStyle.GOLD if tool.rewind_exhausted else ACCENT
+		)
 		thread_meter.value = (
 			float(tool.history.size()) / (level.player.config.thread_history_seconds * 60) * 100
 		)
 		hint.text = tool.message if not tool.message.is_empty() else _room_hint()
 		hint.visible = (
-			not tool.message.is_empty() or run.attempt_time < 8 or not level.thread_goal.is_empty()
+			not tool.message.is_empty()
+			or run.attempt_time < 8
+			or not level.thread_goal.is_empty()
+			or tool.stitch_candidate >= 0
+			or tool.candidate >= 0
+			or tool.grapple_index >= 0
 		)
 	if shake_left > 0.0:
 		shake_left -= delta

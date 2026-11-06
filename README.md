@@ -12,6 +12,8 @@ Click **Play in browser**, then choose **Begin the run** or **Thread lessons**. 
 
 Send friends the play link above. They do not need Godot, an installation or a GitHub account. Browser build and deployment instructions are in [Browser build](docs/web_build.md).
 
+The browser edition adds thumb-friendly touch groups, live tool availability and lesson objectives. Reachable stitch terminals are outlined, prompts follow your bindings, and spent rewind returns to normal movement until you release it and lay a fresh trail.
+
 ## Windows download
 
 **[Download Threadrunner for Windows x64](https://github.com/alexhili-stack/threadrunner/releases/latest/download/Threadrunner-Windows.zip)**

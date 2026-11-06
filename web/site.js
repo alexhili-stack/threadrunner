@@ -1,12 +1,15 @@
 "use strict";
 const frame=document.getElementById("game"),boot=document.getElementById("boot"),play=document.getElementById("play"),loading=document.getElementById("loading"),progress=document.getElementById("progress"),status=document.getElementById("status"),state=document.getElementById("game-state"),touch=document.getElementById("touch"),touchToggle=document.getElementById("touch-toggle"),pause=document.getElementById("pause");
-let started=false,ready=false,lastPage="",lastRoom=0;
+let started=false,ready=false,lastPage="",lastRoom=0,touchPreference=null;
+const touchPause=document.getElementById("touch-pause"),objective=document.getElementById("objective");
 const held=new Map();
 function send(action,pressed){if(ready)frame.contentWindow.postMessage({type:"threadrunner-input",action,pressed},location.origin);}
 function releaseAll(){for(const [button,action]of held){button.classList.remove("held");send(action,false);}held.clear();}
 function showTouch(value){touch.hidden=!value;touchToggle.setAttribute("aria-pressed",String(value));if(!value)releaseAll();}
-showTouch(matchMedia("(pointer:coarse)").matches||innerWidth<720);
-touchToggle.addEventListener("click",()=>showTouch(touch.hidden));
+const coarsePointer=matchMedia("(pointer:coarse)");
+function adaptTouch(){showTouch(touchPreference??(coarsePointer.matches||innerWidth<720));}
+adaptTouch();addEventListener("resize",adaptTouch);coarsePointer.addEventListener("change",adaptTouch);
+touchToggle.addEventListener("click",()=>{touchPreference=touch.hidden;showTouch(touchPreference);});
 for(const button of touch.querySelectorAll("[data-action]")){
   button.disabled=true;
   button.addEventListener("pointerdown",event=>{event.preventDefault();if(button.disabled)return;button.setPointerCapture(event.pointerId);held.set(button,button.dataset.action);button.classList.add("held");send(button.dataset.action,true);});
@@ -20,9 +23,17 @@ play.addEventListener("click",()=>{
   const query=new URLSearchParams(location.search);const localQA=["localhost","127.0.0.1"].includes(location.hostname)&&query.get("qa")==="1";
   frame.src="game/index.html"+(localQA?"?qa=1":"");
 });
-pause.addEventListener("click",()=>{releaseAll();send("pause",true);setTimeout(()=>send("pause",false),60);});
+function togglePause(){releaseAll();send("pause",true);setTimeout(()=>{send("pause",false);frame.contentWindow?.postMessage({type:"threadrunner-focus"},location.origin);},60);}
+pause.addEventListener("click",togglePause);touchPause.addEventListener("click",togglePause);
+function toolState(action,name,detail,available,active){
+  const button=touch.querySelector(`[data-action="${action}"]`);
+  button.querySelector(".action-name").textContent=name;
+  button.querySelector(".action-state").textContent=detail;
+  button.dataset.ready=String(available);button.dataset.active=String(active);
+  button.setAttribute("aria-label",`${name}. ${detail}`);
+}
 document.getElementById("fullscreen").addEventListener("click",async()=>{
-  try{if(document.fullscreenElement)await document.exitFullscreen();else await document.getElementById("player").requestFullscreen();}
+  try{if(document.fullscreenElement)await document.exitFullscreen();else await document.getElementById("player").requestFullscreen();frame.contentWindow?.postMessage({type:"threadrunner-focus"},location.origin);}
   catch{status.textContent="Fullscreen is unavailable here. You can still play in this window.";}
 });
 addEventListener("message",event=>{
@@ -39,7 +50,16 @@ addEventListener("message",event=>{
     ready=true;boot.hidden=true;progress.hidden=true;
     const data=message.status;state.textContent=JSON.stringify(data);for(const [key,value]of Object.entries(data))state.dataset[key]=String(value);
     const playing=data.page==="game";pause.disabled=!playing&&data.page!=="pause";pause.textContent=data.page==="pause"?"Resume":"Pause";
-    for(const button of touch.querySelectorAll("button"))button.disabled=!playing;
+    for(const button of touch.querySelectorAll("[data-action]"))button.disabled=!playing;
+    touchPause.disabled=pause.disabled;touchPause.textContent=pause.textContent;
+    if(playing){
+      toolState("thread_stitch",data.stitch_active?"Release":"Stitch",data.stitch_ready?"Terminal in reach":"Find terminal",!!data.stitch_ready,!!data.stitch_active);
+      toolState("thread_grapple",data.tether?"Release":"Grapple",data.tether?"Jump to launch":data.grapple_ready?"Anchor in reach":"Find anchor",!!data.grapple_ready,!!data.tether);
+      toolState("thread_rewind","Rewind",data.rewind_exhausted?"Release to refill":data.rewinding?"Returning":`${Number(data.rewind_seconds||0).toFixed(1)} s stored`,Number(data.rewind_seconds)>0&&!data.rewind_exhausted,!!data.rewinding);
+      touch.querySelector('[data-action="jump"] .action-state').textContent=data.tether?"Release upward":"Hold for height";
+    }
+    objective.hidden=!playing||!data.objective;
+    if(objective.textContent!==(data.objective||""))objective.textContent=data.objective||"";
     if(!playing)releaseAll();
     if(data.page!==lastPage||data.room!==lastRoom){status.textContent=playing?`Room ${data.room} · ${data.name}`:data.page==="pause"?"Paused. Your thread is waiting.":data.page==="complete"?"Signal delivered. Choose your next room.":data.page==="menu"?"Choose Thread lessons to learn stitching, swinging and rewind.":"Choose an option in the game.";lastPage=data.page;lastRoom=data.room;}
     if(!data.persistent)document.getElementById("save-help").textContent="Browser storage is unavailable, so progress will last for this session only.";

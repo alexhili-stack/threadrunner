@@ -13,8 +13,9 @@
   addEventListener("message",event=>{
     if(event.origin!==location.origin||event.source!==parent||!event.data)return;
     const message=event.data;
-    if(message.type==="threadrunner-input"&&input&&allowed.has(message.action)&&typeof message.pressed==="boolean"){canvas.focus({preventScroll:true});input(message.action,message.pressed);}
+    if(message.type==="threadrunner-input"&&input&&allowed.has(message.action)&&typeof message.pressed==="boolean")input(message.action,message.pressed);
     if(message.type==="threadrunner-pause"&&pause&&!localQA)pause();
+    if(message.type==="threadrunner-focus")canvas.focus({preventScroll:true});
   });
   document.addEventListener("visibilitychange",()=>{if(document.hidden&&pause&&!localQA)pause();});
   addEventListener("blur",()=>setTimeout(()=>{if(localQA)return;try{if((document.hidden||!parent.document.hasFocus())&&pause)pause();}catch{if(pause)pause();}},0));

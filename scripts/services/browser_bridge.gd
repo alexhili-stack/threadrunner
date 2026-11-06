@@ -57,7 +57,8 @@ func _process(delta: float) -> void:
 		"completed": app.saves.data.completed.size(),
 		"fragments": app.saves.data.fragments.size(),
 		"persistent": OS.is_userfs_persistent(),
-		"touch": app.last_input_touch
+		"touch": app.last_input_touch,
+		"muted": app.saves.data.settings.mute
 	}
 	if is_instance_valid(app.level):
 		data["name"] = LevelCatalog.entry(app.level_index).display_name
@@ -69,4 +70,14 @@ func _process(delta: float) -> void:
 		data["bridge"] = app.level.thread_tool.relay_powered()
 		data["tether"] = app.level.thread_tool.grapple_index >= 0
 		data["rewound"] = app.level.thread_tool.rewound_distance
+		data["stitch_ready"] = app.level.thread_tool.stitch_candidate >= 0
+		data["stitch_active"] = (
+			app.level.thread_tool.stitch_candidate >= 0
+			and app.level.thread_tool.stitched[app.level.thread_tool.stitch_candidate]
+		)
+		data["grapple_ready"] = app.level.thread_tool.candidate >= 0
+		data["rewind_seconds"] = float(app.level.thread_tool.history.size()) / 60
+		data["rewinding"] = app.level.thread_tool.rewinding
+		data["rewind_exhausted"] = app.level.thread_tool.rewind_exhausted
+		data["objective"] = app.level.thread_tool.objective_hint()
 	host.setStatus(JSON.stringify(data))

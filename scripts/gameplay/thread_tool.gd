@@ -8,8 +8,10 @@ var bridges: Array[StaticBody2D] = []
 var stitched: Array[bool] = []
 var grapple_index: int = -1
 var candidate: int = -1
+var stitch_candidate: int = -1
 var rope_length: float = 0.0
 var rewinding: bool = false
+var rewind_exhausted: bool = false
 var rewound_distance: float = 0.0
 var has_stitched: bool = false
 var has_grappled: bool = false
@@ -45,7 +47,9 @@ func reset() -> void:
 	history.clear()
 	grapple_index = -1
 	candidate = -1
+	stitch_candidate = -1
 	rewinding = false
+	rewind_exhausted = false
 	rewound_distance = 0.0
 	has_stitched = false
 	has_grappled = false
@@ -66,11 +70,16 @@ func handle_input(stitch: bool, grapple: bool, rewind: bool, delta: float) -> vo
 		grapple_index = -1
 		_notify("Thread caught on a solid edge")
 	candidate = nearest_anchor()
-	rewinding = rewind
+	stitch_candidate = nearest_stitch()
+	if not rewind:
+		rewind_exhausted = false
+	rewinding = rewind and not rewind_exhausted and not history.is_empty()
 	if rewind:
-		grapple_index = -1
-		if history.size() <= 3:
-			_notify("No thread left to rewind")
+		if rewinding:
+			grapple_index = -1
+		elif not rewind_exhausted:
+			rewind_exhausted = true
+			_notify("Thread spent. Release Rewind, move, then try again.")
 		return
 	if stitch:
 		stitch_nearby()
@@ -118,7 +127,7 @@ func line_clear(from: Vector2, to: Vector2) -> bool:
 	return player.get_world_2d().direct_space_state.intersect_ray(query).is_empty()
 
 
-func stitch_nearby() -> void:
+func nearest_stitch() -> int:
 	var found: int = -1
 	var closest: float = player.config.thread_stitch_reach
 	for i in room.stitch_pairs.size():
@@ -128,6 +137,11 @@ func stitch_nearby() -> void:
 			if distance < closest and line_clear(player.position, endpoint - Vector2(0, 3)):
 				closest = distance
 				found = i
+	return found
+
+
+func stitch_nearby() -> void:
+	var found: int = nearest_stitch()
 	if found < 0:
 		_notify("Move beside a square stitch terminal")
 		return
@@ -157,13 +171,27 @@ func goal_met() -> bool:
 	return true
 
 
+func objective_hint() -> String:
+	if room.thread_goal.is_empty():
+		return ""
+	if goal_met():
+		return "Threadwork complete. Reach the exit."
+	if room.thread_goal in ["stitch", "relay", "all"] and not relay_powered():
+		return "Weave a bridge at a square terminal."
+	if room.thread_goal in ["grapple", "all"] and not has_grappled:
+		return "Swing from a round anchor. Jump to release upward."
+	if not checkpoint_reached:
+		return "Reach the relay, then rewind along your trail."
+	return "Relay reached. Rewind to carry the signal back."
+
+
 func record_position() -> void:
 	if room.thread_checkpoint.x >= 0 and player.position.distance_to(room.thread_checkpoint) < 22:
 		if not checkpoint_reached:
 			player.feedback.emit("fragment")
 			_notify("Relay reached / rewind your thread")
 		checkpoint_reached = true
-	if not rewinding:
+	if not rewinding and not rewind_exhausted:
 		history.append(player.position)
 		if history.size() > int(player.config.thread_history_seconds * 60):
 			history.pop_front()
@@ -183,6 +211,7 @@ func finish_rewind_step(previous: Vector2, blocked: bool) -> void:
 	if blocked:
 		history.clear()
 		rewinding = false
+		rewind_exhausted = true
 		_notify("Thread blocked by a solid surface")
 	queue_redraw()
 
@@ -219,6 +248,10 @@ func _draw() -> void:
 			draw_rect(Rect2(endpoint - Vector2(4, 4), Vector2(8, 8)), ThreadStyle.INK)
 			draw_rect(Rect2(endpoint - Vector2(4, 4), Vector2(8, 8)), color, false, 1.5)
 			draw_circle(endpoint, 1, color)
+			if i == stitch_candidate:
+				draw_rect(
+					Rect2(endpoint - Vector2(7, 7), Vector2(14, 14)), ThreadStyle.PAPER, false, 1
+				)
 	for i in room.thread_anchors.size():
 		var point: Vector2 = room.thread_anchors[i]
 		var color: Color = (

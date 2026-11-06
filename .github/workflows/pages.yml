@@ -3,6 +3,11 @@ name: Build and deploy browser game
 on:
   push:
     branches: [main]
+    paths-ignore:
+      - 'docs/**'
+      - 'README.md'
+      - 'DESIGN.md'
+      - 'PRODUCT.md'
   workflow_dispatch:
 
 permissions:
