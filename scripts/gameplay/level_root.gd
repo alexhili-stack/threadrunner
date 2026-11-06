@@ -1,6 +1,8 @@
 class_name LevelRoot
 extends Node2D
 
+const SURFACE: Texture2D = preload("res://assets/art/foundry/platform_surface.png")
+
 @export var level_id: String = ""
 @export var spawn: Vector2 = Vector2(40, 317)
 @export var exit_position: Vector2 = Vector2(600, 308)
@@ -24,6 +26,7 @@ extends Node2D
 @export var stitch_pairs: Array[Vector4] = []
 @export var thread_goal: String = ""
 @export var thread_checkpoint: Vector2 = Vector2(-1, -1)
+
 var thread_tool: ThreadTool
 var player: PlayerController
 var elapsed: float = 0.0
@@ -37,6 +40,7 @@ var exit_pulse: float = 0.0
 
 
 func _ready() -> void:
+	texture_repeat = CanvasItem.TEXTURE_REPEAT_ENABLED
 	for rect: Rect2 in platforms:
 		var body: StaticBody2D = StaticBody2D.new()
 		var collision: CollisionShape2D = CollisionShape2D.new()
@@ -57,6 +61,7 @@ func _ready() -> void:
 		camera.limit_right = int(world_size.x)
 		camera.limit_bottom = int(world_size.y)
 		player.add_child(camera)
+	add_child(preload("res://scripts/gameplay/hazard_atmosphere.gd").new())
 	thread_tool = ThreadTool.new()
 	thread_tool.name = "ThreadTool"
 	add_child(thread_tool)
@@ -154,20 +159,23 @@ func touching_fragment() -> bool:
 
 
 func _draw() -> void:
-	var pale: Color = Color("b9cecc")
+	var pale: Color = ThreadStyle.LANDING
 	for rect: Rect2 in platforms:
-		draw_rect(rect, Color("1b343d"))
-		draw_line(rect.position, rect.position + Vector2(rect.size.x, 0), pale, 1.5)
-		draw_line(rect.position, Vector2(rect.position.x, rect.end.y), Color("42606a"), 1)
-		draw_line(Vector2(rect.end.x, rect.position.y), rect.end, Color("42606a"), 1)
+		draw_rect(rect, ThreadStyle.PLATFORM)
+		draw_texture_rect_region(
+			SURFACE, rect, Rect2(rect.position * 4, rect.size * 4), Color.WHITE, false, false
+		)
+		draw_line(rect.position, rect.position + Vector2(rect.size.x, 0), pale, 1.0)
+		draw_line(rect.position, Vector2(rect.position.x, rect.end.y), Color("52565e"), 1)
+		draw_line(Vector2(rect.end.x, rect.position.y), rect.end, Color("52565e"), 1)
 		if rect.size.x > 40:
 			draw_line(
-				rect.position + Vector2(4, 4), rect.position + Vector2(12, 4), Color("37535d"), 1
+				rect.position + Vector2(4, 4), rect.position + Vector2(12, 4), Color("747780"), 1
 			)
 			draw_line(
 				Vector2(rect.end.x - 12, rect.position.y + 4),
 				Vector2(rect.end.x - 4, rect.position.y + 4),
-				Color("37535d"),
+				Color("747780"),
 				1
 			)
 	for rect: Rect2 in spikes:
@@ -196,7 +204,7 @@ func _draw() -> void:
 			)
 	for marker: Vector2 in route_markers:
 		var direction: float = -1.0 if marker.y > 200 and marker.y < 270 else 1.0
-		var color: Color = Color(0.25, 0.85, 0.76, 0.25)
+		var color: Color = Color(ThreadStyle.SECONDARY, 0.16)
 		draw_polyline(
 			PackedVector2Array(
 				[marker + Vector2(-4 * direction, -3), marker, marker + Vector2(-4 * direction, 3)]
@@ -216,16 +224,17 @@ func _draw() -> void:
 		for i in 24:
 			var angle: float = float(i) * TAU / 24.0 + elapsed * 2.0
 			teeth.append(point + Vector2.from_angle(angle) * (16 if i % 2 == 0 else 10.5))
-		draw_colored_polygon(teeth, Color("663c3e"))
+		draw_colored_polygon(teeth, Color("362d49"))
 		teeth.append(teeth[0])
-		draw_polyline(teeth, ThreadStyle.DANGER, 1.5, true)
-		draw_circle(point, 4, ThreadStyle.DANGER, false, 1.5, true)
+		draw_polyline(teeth, Color(ThreadStyle.SAW, 0.16), 5, true)
+		draw_polyline(teeth, ThreadStyle.SAW, 1.5, true)
+		draw_circle(point, 4, ThreadStyle.SAW, false, 1.5, true)
 		draw_circle(point, 1.3, ThreadStyle.PAPER)
 	for vent: Rect2 in vents:
 		var active: bool = vent_is_active()
 		var warning: bool = vent_is_warning()
 		var tint: Color = (
-			ThreadStyle.DANGER if active else ThreadStyle.GOLD if warning else Color("8bafbc")
+			ThreadStyle.HEAT if active else ThreadStyle.GOLD if warning else ThreadStyle.SECONDARY
 		)
 		draw_line(Vector2(vent.position.x, vent.end.y - 2), vent.end - Vector2(0, 2), tint, 3)
 		for x in range(int(vent.position.x) + 4, int(vent.end.x), 8):
@@ -247,7 +256,9 @@ func _draw() -> void:
 			draw_circle(Vector2(vent.get_center().x, vent.end.y - 11), 3, tint)
 	for rect: Rect2 in gates:
 		var open: bool = gate_is_open()
-		draw_rect(rect, Color(0.25, 0.85, 0.76, 0.07) if open else Color(1, 0.35, 0.3, 0.22))
+		draw_rect(
+			rect, Color(ThreadStyle.THREAD, 0.07) if open else Color(ThreadStyle.DANGER, 0.16)
+		)
 		var closing: bool = (
 			open
 			and not thread_tool.relay_powered()
@@ -267,7 +278,7 @@ func _draw() -> void:
 			1.0 if thread_tool.relay_powered() else fmod(elapsed, gate_period) / gate_period
 		)
 		draw_line(
-			rect.position - Vector2(10, 8), rect.position + Vector2(20, -8), Color("25424d"), 2.0
+			rect.position - Vector2(10, 8), rect.position + Vector2(20, -8), ThreadStyle.LINE, 2.0
 		)
 		draw_line(
 			rect.position - Vector2(10, 8),
@@ -294,26 +305,6 @@ func _draw() -> void:
 		var t: float = float(i) / 32 * TAU
 		knot.append(e + Vector2(sin(t) * 7, sin(t * 2) * 4))
 	draw_polyline(knot, exit_tint, 1.5, true)
-	if not thread_tool.goal_met():
-		var objective: String = (
-			{
-				"stitch": "STITCH",
-				"relay": "RELAY",
-				"grapple": "SWING",
-				"rewind": "REWIND",
-				"all": "WEAVE"
-			}
-			. get(thread_goal, "")
-		)
-		draw_string(
-			ThreadStyle.DISPLAY,
-			e + Vector2(-14, -26),
-			objective,
-			HORIZONTAL_ALIGNMENT_LEFT,
-			-1,
-			9,
-			exit_tint
-		)
 	if not fragment_collected:
 		var f: Vector2 = fragment_position
 		var diamond: PackedVector2Array = PackedVector2Array(
@@ -341,7 +332,7 @@ func _draw() -> void:
 			0,
 			TAU,
 			24,
-			Color(0.25, 0.85, 0.76, exit_pulse),
+			Color(ThreadStyle.THREAD, exit_pulse),
 			2,
 			true
 		)

@@ -36,6 +36,7 @@ var settings_tab: String = "Sound"
 var controls_group: String = "Movement"
 var selected_chapter: int = 0
 var thread_status: Label
+var help_text: Label
 var thread_meter: ThreadMeter
 
 
@@ -110,6 +111,7 @@ func clear_ui() -> void:
 		child.queue_free()
 	hud = null
 	hint = null
+	help_text = null
 	debug_label = null
 	control_hint = null
 	hud_status = null
@@ -161,12 +163,9 @@ func button(
 
 
 func footer(value: String = "A / D  MOVE     SPACE  JUMP     R  RETRY     ESC  PAUSE") -> void:
-	var lesson: bool = page == "game" and not level.thread_goal.is_empty()
-	if page == "game" and not lesson:
-		_rule(Vector2(0, 345), Vector2(640, 15), Color("09171e"))
-	control_hint = text_at(
-		value, Vector2(24, 73 if lesson else 346 if page == "game" else 338), 9, MUTED, 600
-	)
+	if page == "game":
+		return
+	control_hint = text_at(value, Vector2(24, 338), 9, MUTED, 600)
 
 
 func _rule(position: Vector2, extent: Vector2, color: Color = ThreadStyle.LINE) -> void:
@@ -260,8 +259,8 @@ func show_select() -> void:
 			112
 		)
 		if i == selected_chapter:
-			chapter_button.add_theme_stylebox_override("normal", ThreadStyle.panel(Color("23464a")))
-			chapter_button.add_theme_color_override("font_color", ACCENT)
+			chapter_button.add_theme_stylebox_override("normal", ThreadStyle.panel(Color("202c3d")))
+			chapter_button.add_theme_color_override("font_color", ThreadStyle.TEXT_ACCENT)
 	text_at(LevelCatalog.CHAPTERS[selected_chapter], Vector2(25, 123), 26, INK, 305)
 	preview_title = text_at("", Vector2(352, 126), 24, INK, 264)
 	preview_title.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
@@ -440,35 +439,32 @@ func show_hud() -> void:
 	page = "game"
 	level_container.visible = true
 	clear_ui()
-	text_at(
-		"%02d / %s" % [level_index + 1, LevelCatalog.entry(level_index).display_name.to_upper()],
-		Vector2(19, 4),
-		22,
-		INK,
-		390
-	)
-	text_at(LevelCatalog.CHAPTERS[level_index / 10], Vector2(20, 31), 9, ACCENT, 350)
-	hud = text_at("", Vector2(476, 3), 23, INK, 104)
-	hud_status = text_at("", Vector2(476, 32), 9, MUTED, 144)
-	thread_status = text_at("", Vector2(476, 48), 8, ACCENT, 150)
+	# State labels remain available for verification; gameplay shows no text overlays.
+	hud = text_at("", Vector2.ZERO, 12)
+	hud.visible = false
+	hud_status = text_at("", Vector2.ZERO, 9)
+	hud_status.visible = false
+	thread_status = text_at("", Vector2.ZERO, 8)
+	thread_status.visible = false
+	hint = text_at("", Vector2.ZERO, 9)
+	hint.visible = false
+	debug_label = text_at("", Vector2(20, 32), 9, ThreadStyle.GOLD)
 	thread_meter = ThreadMeter.new()
-	thread_meter.position = Vector2(476, 61)
-	thread_meter.size = Vector2(140, 2)
-	thread_meter.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	thread_meter.position = Vector2(16, 345)
+	thread_meter.size = Vector2(72, 2)
 	ui.add_child(thread_meter)
-	button("Pause", Vector2(581, 6), show_pause, 45).add_theme_font_size_override("font_size", 9)
-	hint = text_at(level.purpose, Vector2(20, 48), 9, MUTED, 440)
-	hint.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	debug_label = text_at("", Vector2(20, 69), 9, ThreadStyle.GOLD)
-	footer()
+	var pause: Button = button("", Vector2(603, 9), show_pause, 24)
+	pause.icon = preload("res://assets/ui/pause.svg")
+	pause.icon_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	pause.tooltip_text = "Pause / " + inputs.label_for("pause", last_input_controller)
+	pause.add_theme_stylebox_override("normal", ThreadStyle.panel(Color.TRANSPARENT))
 	run.set_paused(false)
 	audio.set_context(level_index / 10 + 1)
-	refresh_control_hint()
 
 
 func overlay(title: String, subtitle: String) -> void:
 	clear_ui()
-	_rule(Vector2.ZERO, Vector2(640, 360), Color(0.025, 0.065, 0.085, 0.94))
+	_rule(Vector2.ZERO, Vector2(640, 360), Color(0.025, 0.027, 0.032, 0.94))
 	text_at(title, Vector2(86, 47), 44, INK, 490)
 	var sub: Label = text_at(subtitle, Vector2(88, 106), 12, MUTED, 464)
 	sub.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
@@ -496,7 +492,8 @@ func show_pause() -> void:
 	)
 	button("Settings", Vector2(88, 231), func() -> void: show_settings("pause"), 116)
 	button("Room select", Vector2(212, 231), show_select, 116)
-	button("Main menu", Vector2(88, 268), show_menu, 240)
+	button("How to play", Vector2(88, 268), func() -> void: show_help("pause"), 116)
+	button("Main menu", Vector2(212, 268), show_menu, 116)
 	text_at("%02d" % (level_index + 1), Vector2(404, 145), 64, ACCENT, 160)
 	var room_name: Label = text_at(
 		LevelCatalog.entry(level_index).display_name, Vector2(404, 220), 20, INK, 164
@@ -504,6 +501,50 @@ func show_pause() -> void:
 	room_name.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	text_at("%02d retries this room" % run.deaths, Vector2(404, 281), 10, MUTED, 180)
 	footer("ESC / START TO RESUME")
+
+
+func show_help(origin: String = "pause") -> void:
+	return_page = origin
+	page = "help"
+	run.set_paused(true)
+	clear_ui()
+	_rule(Vector2.ZERO, Vector2(640, 360), ThreadStyle.INK)
+	_heading("THE THREAD", _help_back)
+	var lines: Array[String] = [
+		"%s / %s  Move" % [inputs.label_for("move_left"), inputs.label_for("move_right")],
+		"%s  Jump. Hold for height; jump releases a grapple upward." % inputs.label_for("jump"),
+		(
+			"%s  Stitch beside square terminals to weave bridges and power relays."
+			% inputs.label_for("thread_stitch")
+		),
+		(
+			"%s  Grapple a round anchor; steer to swing. Press again to drop."
+			% inputs.label_for("thread_grapple")
+		),
+		(
+			"Hold %s  Rewind your real trail. Time and hazards keep moving."
+			% inputs.label_for("thread_rewind")
+		),
+		"%s  Retry    /    %s  Pause" % [inputs.label_for("restart"), inputs.label_for("pause")]
+	]
+	help_text = text_at("\n\n".join(lines), Vector2(28, 83), 10, INK, 580)
+	help_text.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	if is_instance_valid(level):
+		text_at(level.thread_tool.objective_hint(), Vector2(28, 284), 11, ACCENT, 580)
+	text_at(
+		"Gold fragments count when you finish that attempt. Blue exits accept a completed objective.",
+		Vector2(28, 316),
+		9,
+		MUTED,
+		580
+	)
+
+
+func _help_back() -> void:
+	if return_page == "pause":
+		show_pause()
+	else:
+		show_menu()
 
 
 func _on_death() -> void:
@@ -585,8 +626,8 @@ func show_settings(origin: String) -> void:
 			192
 		)
 		if tab == settings_tab:
-			control.add_theme_stylebox_override("normal", ThreadStyle.panel(Color("23464a")))
-			control.add_theme_color_override("font_color", ACCENT)
+			control.add_theme_stylebox_override("normal", ThreadStyle.panel(Color("202c3d")))
+			control.add_theme_color_override("font_color", ThreadStyle.TEXT_ACCENT)
 	match settings_tab:
 		"Sound":
 			_settings_sound()
@@ -610,7 +651,7 @@ func _toggle_setting(key: String, position: Vector2, width: float = 110) -> void
 			apply_settings()
 			saves.write_save()
 	)
-	toggle.add_theme_stylebox_override("pressed", ThreadStyle.panel(Color("23464a"), ACCENT))
+	toggle.add_theme_stylebox_override("pressed", ThreadStyle.panel(Color("202c3d"), ACCENT))
 
 
 func _settings_sound() -> void:
@@ -654,7 +695,7 @@ func _settings_controls() -> void:
 			130
 		)
 		if group == controls_group:
-			tab.add_theme_color_override("font_color", ACCENT)
+			tab.add_theme_color_override("font_color", ThreadStyle.TEXT_ACCENT)
 	var row: int = 0
 	for action: String in InputService.DEFAULT_KEYS:
 		if action.begins_with("thread_") != (controls_group == "Thread"):
@@ -718,7 +759,12 @@ func _settings_display() -> void:
 		keys.remove_at(0)
 		names.remove_at(0)
 		details.remove_at(0)
-		text_at("Use Fullscreen above the game to fill your display.", Vector2(36, 258), 10, MUTED)
+		text_at(
+			"Fullscreen is available below this pause menu in the browser.",
+			Vector2(36, 258),
+			10,
+			MUTED
+		)
 	for i in keys.size():
 		var y: float = 130 + i * 51
 		text_at(names[i], Vector2(36, y), 15, INK, 390)
@@ -785,7 +831,7 @@ func show_credits() -> void:
 	text_at(
 		(
 			"Design & implementation\nAlexander Hili with Codex\n\n"
-			+ "Art & sound\nOriginal vector drawing and synthesis\n\n"
+			+ "Art & sound\nOriginal vectors, AI-assisted foundry plates and synthesis\n\n"
 			+ "Type\nBarlow Condensed & Manrope / SIL OFL 1.1"
 		),
 		Vector2(33, 132),
@@ -853,6 +899,8 @@ func _input(event: InputEvent) -> void:
 				show_hud()
 			"settings", "reset_confirm":
 				settings_back()
+			"help":
+				_help_back()
 			"select", "credits", "complete":
 				show_menu()
 
@@ -894,14 +942,11 @@ func _process(delta: float) -> void:
 			float(tool.history.size()) / (level.player.config.thread_history_seconds * 60) * 100
 		)
 		hint.text = tool.message if not tool.message.is_empty() else _room_hint()
-		hint.visible = (
-			not tool.message.is_empty()
-			or run.attempt_time < 8
-			or not level.thread_goal.is_empty()
-			or tool.stitch_candidate >= 0
-			or tool.candidate >= 0
-			or tool.grapple_index >= 0
+		hint.visible = false
+		backdrop.pan = clampf(
+			(level.player.position.x - 320) / maxf(1, level.world_size.x - 640), 0, 1
 		)
+
 	if shake_left > 0.0:
 		shake_left -= delta
 		level_container.position = Vector2(sin(shake_left * 260.0), cos(shake_left * 170.0)) * 1.5

@@ -32,7 +32,7 @@ def main():
     shutil.copytree(ROOT / 'assets/fonts', target / 'fonts', ignore=shutil.ignore_patterns('*.import'), dirs_exist_ok=True)
     shutil.copy2(ROOT / 'assets/art/icon.svg', target / 'icon.svg')
     shutil.copytree(ROOT / 'third_party', target / 'third_party', dirs_exist_ok=True)
-    notices = '<!doctype html><html lang="en"><meta charset="utf-8"><title>Threadrunner credits</title><style>body{background:#09171e;color:#f2f3e9;font:16px/1.6 sans-serif;max-width:800px;margin:40px auto;padding:20px}a{color:#58e1c3}</style><h1>Threadrunner — credits and licenses</h1><p>Original game design, vector art and synthesized sound: Alexander Hili with Codex.</p><ul>'
+    notices = '<!doctype html><html lang="en"><meta charset="utf-8"><title>Threadrunner credits</title><style>body{background:#08090b;color:#f2f3e9;font:16px/1.6 sans-serif;max-width:800px;margin:40px auto;padding:20px}a{color:#008cff}</style><h1>Threadrunner — credits and licenses</h1><p>Original game design, vector art and synthesized sound: Alexander Hili with Codex.</p><ul>'
     for file in sorted((target / 'third_party').rglob('*')):
         if file.is_file():
             notices += f'<li><a href="{file.relative_to(target / "third_party").as_posix()}">{file.relative_to(target / "third_party").as_posix()}</a></li>'
@@ -40,7 +40,7 @@ def main():
     (target / 'third_party/index.html').write_text(notices, encoding='utf-8')
     (target / '.nojekyll').write_text('')
     revision = subprocess.run(['git', 'rev-parse', 'HEAD'], cwd=ROOT, capture_output=True, text=True)
-    manifest = {'game': 'Threadrunner', 'version': '1.3.0-web', 'engine': '4.7.2', 'threaded': False,
+    manifest = {'game': 'Threadrunner', 'version': '1.4.0-foundry', 'engine': '4.7.2', 'threaded': False,
                 'source_revision': revision.stdout.strip() if revision.returncode == 0 else None, 'files': {}}
     for file in sorted(target.rglob('*')):
         if file.is_file() and file.name != 'manifest.json':

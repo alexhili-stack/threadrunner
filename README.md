@@ -8,11 +8,11 @@ Carry the last signal. An original precision platformer with 40 campaign rooms a
 
 **[Play Threadrunner — no download needed](https://alexhili-stack.github.io/threadrunner/)**
 
-Click **Play in browser**, then choose **Begin the run** or **Thread lessons**. Keyboard, controller and touch controls are available. Use the player's Fullscreen button for a larger view. Progress saves in the same browser on the same device; clearing site data removes it. The first load is approximately 42 MB and requires WebGL 2.
+Click **Play in browser**, then choose **Begin the run** or **Thread lessons**. Keyboard, controller and touch controls are available. Use the player's Fullscreen button for a larger view. Progress saves in the same browser on the same device; clearing site data removes it. The first load is approximately 45 MB and requires WebGL 2.
 
 Send friends the play link above. They do not need Godot, an installation or a GitHub account. Browser build and deployment instructions are in [Browser build](docs/web_build.md).
 
-The browser edition adds thumb-friendly touch groups, live tool availability and lesson objectives. Reachable stitch terminals are outlined, prompts follow your bindings, and spent rewind returns to normal movement until you release it and lay a fresh trail.
+The Electric Foundry browser edition puts play first: dark concrete and metal, a bright blue thread, and violet, pink and amber danger haze. The arena contains only pause and a small rewind-history rail. Open **Pause → How to play** for bindings and objectives. Touch controls stay beside the arena on phones; spent rewind returns to movement until you release it and lay a fresh trail.
 
 ## Windows download
 
@@ -54,4 +54,4 @@ See [thread mechanics](docs/thread_tool.md), [architecture](docs/architecture.md
 
 The browser edition exports the shared game with Godot 4.7.2. Version 1.2.0 remains available as a standalone Windows x64 release. Native macOS, Linux and Steam Deck builds are not provided. See [verified QA results](docs/public_qa.md) for executed checks and their limits. Human difficulty, physical-controller feel and listening remain playtest tasks.
 
-Design and implementation: Alexander Hili with Codex. Original vector art and synthesized audio. Barlow Condensed and Manrope fonts use SIL OFL 1.1. Godot, GdUnit4 and gdtoolkit retain their own licenses in `third_party`. The project's original code/assets do not yet have a separately specified open-source license.
+Design and implementation: Alexander Hili with Codex. Original vector art, AI-assisted foundry imagery and synthesized audio. Barlow Condensed and Manrope fonts use SIL OFL 1.1. Godot, GdUnit4 and gdtoolkit retain their own licenses in `third_party`. The project's original code/assets do not yet have a separately specified open-source license.

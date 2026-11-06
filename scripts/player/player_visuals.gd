@@ -87,7 +87,7 @@ func _draw() -> void:
 		for i in 8:
 			var ray: Vector2 = Vector2.from_angle(float(i) * TAU / 8)
 			var radius: float = 4 + death_age * 70
-			draw_line(ray * radius, ray * (radius + 3), Color("ff7467"), 1.5, true)
+			draw_line(ray * radius, ray * (radius + 3), ThreadStyle.DANGER, 1.5, true)
 		return
 	for i in range(1, ribbon.size()):
 		draw_line(

@@ -2,11 +2,16 @@ class_name ThreadStyle
 extends RefCounted
 
 const PAPER: Color = Color("f2f3e9")
-const SECONDARY: Color = Color("a2b8bd")
-const THREAD: Color = Color("58e1c3")
-const INK: Color = Color("09171e")
-const LINE: Color = Color("304851")
-const DANGER: Color = Color("ff8175")
+const SECONDARY: Color = Color("afb3bb")
+const THREAD: Color = Color("008cff")
+const TEXT_ACCENT: Color = Color("299dff")
+const INK: Color = Color("08090b")
+const LINE: Color = Color("35383e")
+const DANGER: Color = Color("ff3aba")
+const SAW: Color = Color("b68aff")
+const HEAT: Color = Color("ffae42")
+const PLATFORM: Color = Color("303237")
+const LANDING: Color = Color("c6c9cf")
 const GOLD: Color = Color("f5cc83")
 const DISPLAY: Font = preload("res://assets/fonts/BarlowCondensed-SemiBold.ttf")
 const BODY: Font = preload("res://assets/fonts/Manrope.ttf")
@@ -35,16 +40,16 @@ static func make_theme() -> Theme:
 		theme.set_color("font_color", type, PAPER)
 	theme.set_color("font_hover_color", "Button", PAPER)
 	theme.set_color("font_focus_color", "Button", PAPER)
-	theme.set_color("font_pressed_color", "Button", THREAD)
+	theme.set_color("font_pressed_color", "Button", TEXT_ACCENT)
 	theme.set_color("font_disabled_color", "Button", Color("718991"))
-	var normal: StyleBoxFlat = panel(Color(0.06, 0.13, 0.16, 0.4))
+	var normal: StyleBoxFlat = panel(Color(0.10, 0.11, 0.13, 0.75))
 	normal.border_width_bottom = 1
 	normal.border_color = LINE
 	theme.set_stylebox("normal", "Button", normal)
-	theme.set_stylebox("hover", "Button", panel(Color("1b343d")))
-	theme.set_stylebox("pressed", "Button", panel(Color("23464a")))
+	theme.set_stylebox("hover", "Button", panel(Color("30343c")))
+	theme.set_stylebox("pressed", "Button", panel(Color("222936")))
 	theme.set_stylebox("focus", "Button", panel(Color.TRANSPARENT, THREAD))
-	theme.set_stylebox("disabled", "Button", panel(Color("0e2028")))
+	theme.set_stylebox("disabled", "Button", panel(Color("141519")))
 	var rail: StyleBoxFlat = panel(LINE)
 	rail.content_margin_top = 2
 	rail.content_margin_bottom = 2
@@ -60,7 +65,7 @@ static func make_theme() -> Theme:
 static func primary(control: Button) -> void:
 	control.add_theme_stylebox_override("normal", panel(THREAD))
 	control.add_theme_stylebox_override("hover", panel(PAPER))
-	control.add_theme_stylebox_override("pressed", panel(Color("9aead7")))
+	control.add_theme_stylebox_override("pressed", panel(Color("9bccff")))
 	control.add_theme_stylebox_override("focus", panel(Color.TRANSPARENT, PAPER))
 	for state: String in [
 		"font_color", "font_hover_color", "font_focus_color", "font_pressed_color"

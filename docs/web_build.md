@@ -1,12 +1,12 @@
 # Browser build
 
-Play at **https://alexhili-stack.github.io/threadrunner/**. No installation or GitHub account is needed. Click **Play in browser**, then choose **Begin the run** or **Thread lessons**. The first visit downloads approximately 42 MB; later loads can use the browser cache.
+Play at **https://alexhili-stack.github.io/threadrunner/**. No installation or GitHub account is needed. Click **Play in browser**, then choose **Begin the run** or **Thread lessons**. The first visit downloads approximately 45 MB; later loads can use the browser cache.
 
 The same Godot 4.7.2 scenes, CharacterBody2D controller, movement resource and 45 stable room IDs are exported to WebAssembly. The Web preset uses the GL Compatibility renderer and the single-threaded release template, so GitHub Pages needs no custom isolation headers. It does not install a service worker.
 
 ## Playing
 
-Keyboard and controller mappings match the Windows version. The player also offers touch buttons, pause/resume and fullscreen. On smaller screens, landscape orientation gives the game more room. Jump releases a grapple upward; hold Rewind to follow the actual trail. Browser and device performance vary; WebGL 2 is required.
+Keyboard and controller mappings match the Windows version. The player also offers touch buttons, pause/resume and fullscreen. Playing fills the browser player without a header or instruction strip. Pause → How to play holds the current bindings and lesson objective; browser utilities appear while paused. On smaller screens, landscape orientation gives the game more room. Jump releases a grapple upward; hold Rewind to follow the actual trail. Browser and device performance vary; WebGL 2 is required.
 
 Progress and settings live in this browser's local storage through Godot's IndexedDB filesystem. Clearing site data removes them. Private browsing or restricted storage may prevent persistence; the player reports when storage is unavailable. Browser saves are independent of the Windows release and other browsers or devices. Switching tabs pauses gameplay. Audio starts after interaction with the player.
 

@@ -232,7 +232,7 @@ func _draw() -> void:
 		var pair: Vector4 = room.stitch_pairs[i]
 		var from: Vector2 = Vector2(pair.x, pair.y)
 		var to: Vector2 = Vector2(pair.z, pair.w)
-		var color: Color = ThreadStyle.THREAD if stitched[i] else Color("9bb7bc")
+		var color: Color = ThreadStyle.THREAD if stitched[i] else ThreadStyle.SECONDARY
 		if stitched[i]:
 			draw_line(from, to, ThreadStyle.THREAD, 3, true)
 			for x in range(8, int(from.distance_to(to)), 12):
@@ -255,7 +255,7 @@ func _draw() -> void:
 	for i in room.thread_anchors.size():
 		var point: Vector2 = room.thread_anchors[i]
 		var color: Color = (
-			ThreadStyle.THREAD if i == candidate or i == grapple_index else Color("799ba6")
+			ThreadStyle.THREAD if i == candidate or i == grapple_index else Color("7e8795")
 		)
 		draw_line(point - Vector2(0, 9), point - Vector2(0, 4), Color(color, 0.5), 1)
 		draw_circle(point, 4, ThreadStyle.INK)
@@ -270,5 +270,8 @@ func _draw() -> void:
 		draw_rect(Rect2(point - Vector2(7, 12), Vector2(14, 24)), color, false, 1)
 		draw_line(point - Vector2(4, 0), point + Vector2(4, 0), color, 1.5)
 	if grapple_index >= 0:
+		draw_line(
+			player.position + Vector2(0, -4), anchor(), Color(ThreadStyle.THREAD, 0.22), 4, true
+		)
 		draw_line(player.position + Vector2(0, -4), anchor(), ThreadStyle.THREAD, 1.6, true)
 		draw_circle(anchor(), 6, ThreadStyle.PAPER, false, 1, true)

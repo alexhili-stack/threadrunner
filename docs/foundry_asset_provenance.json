@@ -1,0 +1,32 @@
+{
+  "selected_option": 2,
+  "reference": "docs/design/electric_foundry_reference.png",
+  "generator": "built-in image_gen",
+  "generated_assets": [
+    {
+      "asset": "assets/art/foundry/background.png",
+      "prompt": "Use case: stylized-concept.\nAsset type: production environment BACKGROUND PLATE for Threadrunner, a side-view 2D precision platformer.\nTarget dimensions: 1600 x 900, 16:9 landscape, edge-to-edge opaque image.\nThe attached image is the approved Electric Foundry visual reference. Match its atmospheric, tactile industrial metal/concrete materials, dense layered structural detail and restrained illumination, but create a BACKGROUND ONLY layer that a separate playable scene will be drawn over.\n\nDraw a deep abandoned industrial foundry interior in almost-black and very dark charcoal grayscale: massive press housings, dark steel pipes and ducts, suspended cables, bolted concrete/metal walls, dim distant service catwalks behind the action plane, and a few low, small warm amber ceiling lamps with soft falloff. Broad structural shapes near the left and right edges frame a calmer central negative-space region. Slight atmospheric depth, soft low-contrast distant structure, readable but dark metallic wear and concrete grain. Production-quality atmospheric indie game art, fixed orthographic side view.\n\nAbsolutely NO foreground gameplay platforms or foreground walkable ledges, no stairs crossing the action plane, no player or characters, no thread or glowing blue lines, no hazards, no saws, no spikes, no flames, no laser gates, no exit doorway, no glowing interactable terminals, no collectibles, no HUD, no text, no logo or frame. Background catwalks must be distant, faint architectural silhouettes, never crisp white landing edges. All structures belong behind gameplay.\n\nKeep this image exceptionally dark and neutral: black recesses, charcoal surfaces, restrained mid-gray reflections, low contrast overall. Tiny sparse muted amber lamps are the only color. Do not make broad bright light beams or white highlights. The later white courier, blue thread, light-gray landing edges and electric hazards must be much brighter than this background. Preserve generous quiet dark space through the middle and lower middle, with upper and edge industrial detail. No copied game assets, no isometric camera, no tilted perspective.",
+      "sha256": "eada928a86b482f57928ef39be2ffa5417f5ab8ee3ff5115697c8be10b51d239",
+      "width": 1672,
+      "height": 941
+    },
+    {
+      "asset": "assets/art/foundry/platform_surface.png",
+      "prompt": "Use case: stylized-concept. Production texture asset for a 2D precision platformer.\nReference image role: material and lighting reference only, from the selected Threadrunner Electric Foundry game design.\nGenerate ONE seamless square 512 x 512 opaque grayscale texture for the front faces of industrial platforms. Flat orthographic front-on material surface filling every pixel, with no perspective, no object silhouette and no border.\nA refined dark charcoal graphite combination of worn blackened concrete and industrial metal, quiet rough fine grain, very subtle low-contrast broad panel seams/joints, tiny nicks and restrained surface wear. Dark neutral luminance, approximately #17191c to #35383c. The texture must be quiet enough to sit underneath sharp separately drawn platform landing edges and a bright blue thread.\nAll four edges must tile seamlessly in both directions. Continuous broad material rather than individual bricks; gentle variation, no obvious repeated motifs.\nNo strong bright stripe, no baked light direction or vignette, no hazard stripes, no rust orange or color, no bolts with bright highlights, no glow, no UI, no text, no player, no platforms or other recognizable objects. Opaque, not transparent.",
+      "sha256": "366f513669965218d68474c8be3ad3e6a0a0866c46566b8b4fa44546642721a3",
+      "width": 1254,
+      "height": 1254
+    },
+    {
+      "asset": "assets/art/foundry/electric_haze.png",
+      "prompt": "Use case: stylized-concept. Asset type: production game VFX sprite for Threadrunner's selected Electric Foundry visual direction. The attached image is a style reference only; create ONLY the effect sprite described here, not a gameplay screenshot.\n\nCreate a horizontal 2:1 transparent effect image approximately 512 x 256 pixels: a delicate soft luminous WHITE and grayscale electric mist plume, fine wisps spread across the lower center and diffusing upward into sparse flowing smoky tendrils. Brightest subtle filaments near the lower central region, a softly feathered alpha perimeter and transparent negative space around every edge. Natural thin volumetric haze with a few very fine electrical wisps, restrained and elegant, like the halo around the hazards in the reference but isolated and completely neutral in color.\n\nIt will be tinted magenta, violet or amber in a game engine underneath separately drawn sharp hazard cores. Therefore use white/gray ONLY, no fixed hue, no black smoky color block, no opaque backdrop, no floor, no objects, no spikes, no saw, no platform, no character, no interface, no text, no lightning-bolt symbol, no border, no contact shadow, no checkerboard baked into pixels. Genuine transparent background with smoothly graduated partial alpha in the mist and zero alpha around the outer border. One effect sprite only, not a sheet or montage.",
+      "sha256": "3fe4c538c24ece23ccb028e2813b1fe03750ba1838050bf058a34cc62faec283",
+      "width": 1774,
+      "height": 887
+    }
+  ],
+  "pause_icon": {
+    "source": "https://raw.githubusercontent.com/godotengine/godot/4.7.2-stable/editor/icons/Pause.svg",
+    "license": "Godot MIT (third_party/godot/NOTICES.txt)"
+  }
+}

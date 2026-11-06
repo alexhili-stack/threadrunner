@@ -1,4 +1,25 @@
-# Browser edition and refinement verification
+# Electric Foundry 1.4 — current verification
+
+The selected dark foundry world is applied across all 45 rooms. Gameplay contains only an icon pause control and a small history rail; bindings and lesson objectives live in Pause → How to play. Geometry, stable room IDs, movement and saves are preserved.
+
+| Check | Result |
+|---|---|
+| Canonical QA, including final targeted rechecks | PASS |
+| Unit tests | 49 cases; zero failures/errors |
+| Scene/fixture validation | 45 scenes, 85 fixtures |
+| Native route replays | 255 clears;40 no-jump and 5 no-tool negative attempts rejected |
+| Native graphical UI | 38/38 assertions passed |
+| Real-time soak | 917.056 seconds, 82 room cycles, zero failures |
+| Windows 1.4 local standalone build | 43/43 checks passed; rebuilt ZIP; public 1.2 download remains separate |
+| Browser release controller replays | 410/410 checks;45 fragment routes × 3 and saved-progress roundtrip |
+| Manual browser checks | Keyboard, held-touch movement, pause/help/back; desktop 1672×941 and portrait 390×844 |
+| Visual review | Selected source compared with actual renders; both scored fixes resolved; design-qa.md passed |
+
+Incomplete graphical reports, diagnostic-script parse and input-timing failures are retained locally. The 38-check gate was preserved; the final synthetic keys wait for GUI processing and physics ticks. Physical phones,Safari, physical controllers, subjective listening, human difficulty and full screen-reader compatibility were not tested.
+
+The selected concept and generation provenance are included in docs/design and docs/foundry_asset_provenance.json. Unavailable design-launcher/detector/process inputs are disclosed; no unperformed detector result is claimed.
+
+# Browser edition1.3 — previous verification
 
 | Check | Result |
 |---|---|

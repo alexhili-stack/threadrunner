@@ -33,8 +33,8 @@ def run(label, command, timeout=180, expected=0, allow_cert=True):
             errors=[line for line in errors if 'Failed to read the root certificate store' not in line]
         if label=='ui':
             checks=json.loads((ART/'ui.json').read_text()) if (ART/'ui.json').exists() else []
-            if len(checks)<33 or any(not item.get('pass',False) for item in checks):
-                errors.append(f'Incomplete or failing graphical report: {len(checks)}/33 checks')
+            if len(checks)<38 or any(not item.get('pass',False) for item in checks):
+                errors.append(f'Incomplete or failing graphical report: {len(checks)}/38 checks')
         passed=done.returncode==expected and (not errors or expected!=0)
         result={'name':label,'pass':passed,'exit':done.returncode,'expected':expected,'seconds':round(time.monotonic()-start,3),'errors':errors}
     except (subprocess.TimeoutExpired,OSError) as exc:

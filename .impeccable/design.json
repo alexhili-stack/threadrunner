@@ -1,12 +1,12 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-11-06T18:54:28Z",
+  "generatedAt": "2026-11-06T21:50:20Z",
   "title": "Design System: Threadrunner",
   "extensions": {
     "colorMeta": {
       "ink": {
         "role": "neutral",
-        "displayName": "Quiet Ink"
+        "displayName": "Foundry Black"
       },
       "paper": {
         "role": "neutral",
@@ -14,19 +14,27 @@
       },
       "secondary": {
         "role": "neutral",
-        "displayName": "Blue-tinted Secondary Text"
+        "displayName": "Secondary Gray"
       },
       "thread": {
         "role": "primary",
-        "displayName": "Signal Teal"
+        "displayName": "Electric Blue"
       },
       "rule": {
         "role": "neutral",
-        "displayName": "Quiet Rule"
+        "displayName": "Charcoal Rule"
       },
       "danger": {
         "role": "secondary",
-        "displayName": "Coral Danger"
+        "displayName": "Electric Pink"
+      },
+      "saw": {
+        "role": "secondary",
+        "displayName": "Saw Violet"
+      },
+      "heat": {
+        "role": "tertiary",
+        "displayName": "Foundry Amber"
       },
       "fragment": {
         "role": "tertiary",
@@ -34,29 +42,45 @@
       },
       "platform": {
         "role": "neutral",
-        "displayName": "Platform Metal"
+        "displayName": "Charcoal Platform"
       },
       "landing-edge": {
         "role": "neutral",
         "displayName": "Pale Landing Edge"
+      },
+      "selected-surface": {
+        "role": "neutral",
+        "displayName": "Selected Blue-charcoal"
+      },
+      "text-accent": {
+        "role": "primary",
+        "displayName": "Accessible Blue Text"
       }
     },
     "typographyMeta": {
       "display": {
         "displayName": "Title Display",
-        "purpose": "Two-line opening title."
+        "purpose": "Opening menu title; no gameplay title overlay."
       },
       "heading": {
         "displayName": "Page Heading",
-        "purpose": "Condensed page headings; related condensed sizes serve overlays, room titles and timers."
+        "purpose": "Menu and help headings; related condensed sizes serve pause, completion and room selection."
       },
       "body": {
-        "displayName": "Controls and Body",
-        "purpose": "Manrope controls with the actual 550-weight OpenType variation."
+        "displayName": "Native Controls and Body",
+        "purpose": "Native Manrope controls with the actual 550-weight OpenType variation."
       },
       "metadata": {
-        "displayName": "Quiet Metadata",
-        "purpose": "Gameplay hints, status and navigation context; control prompts use a smaller local override."
+        "displayName": "Menu Metadata",
+        "purpose": "Quiet menu and settings context; no gameplay status labels."
+      },
+      "browser-body": {
+        "displayName": "Browser Controls",
+        "purpose": "Browser controls and shell copy outside active play."
+      },
+      "browser-help": {
+        "displayName": "Browser Help Copy",
+        "purpose": "Readable dedicated help panel reached through How to play."
       }
     },
     "shadows": [],
@@ -64,12 +88,12 @@
       {
         "name": "rewind-history",
         "value": "360 position samples / 6 seconds at 60 Hz",
-        "purpose": "Bounded functional history; the rail reports its stored duration."
+        "purpose": "Bounded functional history; the unlabeled bottom-left rail reports its proportion."
       },
       {
         "name": "scarf-joints",
         "value": "8",
-        "purpose": "Short flowing courier ribbon, separate from rewind history."
+        "purpose": "Original courier ribbon, separate from rewind history."
       },
       {
         "name": "movement-pulse",
@@ -77,72 +101,97 @@
         "purpose": "Bounded jump, wall-jump and landing feedback in PlayerVisuals."
       },
       {
+        "name": "hazard-haze-breath",
+        "value": "0.8 radians/s; alpha multiplier 0.92 +/- 0.08",
+        "purpose": "Slow decorative variation behind sharp hazard cores, removed by reduced effects."
+      },
+      {
+        "name": "background-pan",
+        "value": "24 logical pixels across normalized room pan",
+        "purpose": "Small horizontal shift of the generated foundry plate in scrolling rooms."
+      },
+      {
         "name": "reduced-effects",
-        "value": "decorative only; preserve tool paths",
-        "purpose": "Reduce decorative trails, scarf sway, pulses and menu motion while retaining bridges, tethers, rewind routes and hazard information."
+        "value": "remove hazard haze; preserve functional paths",
+        "purpose": "Reduce decorative feedback while retaining hazard cores, bridges, tethers and real rewind routes."
       }
     ],
-    "breakpoints": []
+    "breakpoints": [
+      {
+        "name": "browser-narrow",
+        "value": "620px"
+      }
+    ]
   },
   "components": [
     {
       "name": "Primary Button",
       "kind": "button",
       "refersTo": "primary-button",
-      "description": "Design-panel translation of the native Godot primary action: teal fill, ink text and paper focus outline.",
+      "description": "Design-panel translation of the native Godot primary action: electric blue fill, ink text and paper focus outline.",
       "html": "<button class=\"ds-primary\">Begin the run</button>",
-      "css": ".ds-primary{box-sizing:border-box;height:30px;width:242px;padding:3px 10px;background:#58e1c3;color:#09171e;border:0;border-radius:0;text-align:left;font-family:Manrope,sans-serif;font-size:12px;font-weight:550}.ds-primary:hover{background:#f2f3e9}.ds-primary:active{background:#9aead7}.ds-primary:focus-visible{outline:1px solid #f2f3e9;outline-offset:-1px}"
+      "css": ".ds-primary{box-sizing:border-box;height:30px;width:242px;padding:3px 10px;background:#008cff;color:#08090b;border:0;border-radius:0;text-align:left;font-family:Manrope,sans-serif;font-size:12px;font-weight:550}.ds-primary:hover{background:#f2f3e9}.ds-primary:active{background:#9bccff}.ds-primary:focus-visible{outline:1px solid #f2f3e9;outline-offset:-1px}"
     },
     {
       "name": "Secondary Button",
       "kind": "button",
       "refersTo": "secondary-button",
-      "description": "Design-panel translation of the native ruled button and its hover, pressed, disabled and teal focus states.",
-      "html": "<button class=\"ds-secondary\">Room select</button>",
-      "css": ".ds-secondary{box-sizing:border-box;height:30px;width:200px;padding:3px 10px;background:rgba(15.3,33.15,40.8,.4);color:#f2f3e9;border:0;border-bottom:1px solid #304851;border-radius:0;text-align:left;font-family:Manrope,sans-serif;font-size:12px;font-weight:550}.ds-secondary:hover{background:#1b343d;border-bottom-color:transparent}.ds-secondary:active{background:#23464a;color:#58e1c3}.ds-secondary:focus-visible{outline:1px solid #58e1c3;outline-offset:-1px}.ds-secondary:disabled{background:#0e2028;color:#718991;border-bottom-color:transparent}"
+      "description": "Design-panel translation of the native ruled charcoal button with blue keyboard focus.",
+      "html": "<button class=\"ds-secondary\">How to play</button>",
+      "css": ".ds-secondary{box-sizing:border-box;height:30px;width:200px;padding:3px 10px;background:rgba(25.5,28.05,33.15,.75);color:#f2f3e9;border:0;border-bottom:1px solid #35383e;border-radius:0;text-align:left;font-family:Manrope,sans-serif;font-size:12px;font-weight:550}.ds-secondary:hover{background:#30343c;border-bottom-color:transparent}.ds-secondary:active{background:#222936;color:#299dff}.ds-secondary:focus-visible{outline:1px solid #008cff;outline-offset:-1px}.ds-secondary:disabled{background:#141519;color:#718991;border-bottom-color:transparent}"
     },
     {
       "name": "Chapter Tabs",
       "kind": "nav",
-      "description": "Design-panel translation of the native chapter navigation. The selected tab uses a teal label and filled state; the game has five chapter tabs.",
+      "description": "Design-panel translation of the native five-tab chapter navigation, including the selected blue-charcoal fill and electric blue label.",
       "html": "<nav class=\"ds-chapters\" aria-label=\"Chapters\"><button class=\"ds-chapter\" aria-current=\"page\">Boot</button><button class=\"ds-chapter\">Clockwork</button><button class=\"ds-chapter\">Last thread</button><button class=\"ds-chapter\">Afterlight</button><button class=\"ds-chapter\">Threadwork</button></nav>",
-      "css": ".ds-chapters{display:flex;gap:8px}.ds-chapter{box-sizing:border-box;width:112px;height:30px;padding:3px 10px;background:rgba(15.3,33.15,40.8,.4);color:#f2f3e9;border:0;border-bottom:1px solid #304851;border-radius:0;text-align:left;font-family:Manrope,sans-serif;font-size:12px;font-weight:550}.ds-chapter[aria-current=page]{background:#23464a;color:#58e1c3;border-bottom-color:transparent}.ds-chapter:hover{background:#1b343d;border-bottom-color:transparent}.ds-chapter:active{background:#23464a;color:#58e1c3}.ds-chapter:focus-visible{outline:1px solid #58e1c3;outline-offset:-1px}"
+      "css": ".ds-chapters{display:flex;gap:8px}.ds-chapter{box-sizing:border-box;width:112px;height:30px;padding:3px 10px;background:rgba(25.5,28.05,33.15,.75);color:#f2f3e9;border:0;border-bottom:1px solid #35383e;border-radius:0;text-align:left;font-family:Manrope,sans-serif;font-size:12px;font-weight:550}.ds-chapter[aria-current=page]{background:#202c3d;color:#299dff;border-bottom-color:transparent}.ds-chapter:hover{background:#30343c;border-bottom-color:transparent}.ds-chapter:active{background:#222936;color:#299dff}.ds-chapter:focus-visible{outline:1px solid #008cff;outline-offset:-1px}"
     },
     {
       "name": "Knot Slider",
       "kind": "input",
-      "description": "Design-panel translation of the native slider rail and the authored 14 by 18 diamond knot handle.",
-      "html": "<div class=\"ds-slider\" role=\"slider\" aria-label=\"Effects volume\" aria-valuemin=\"0\" aria-valuemax=\"100\" aria-valuenow=\"60\" tabindex=\"0\"><span class=\"ds-slider-rail\"><span class=\"ds-slider-fill\"></span></span><svg class=\"ds-slider-knot\" xmlns=\"http://www.w3.org/2000/svg\" width=\"14\" height=\"18\" viewBox=\"0 0 14 18\" aria-hidden=\"true\"><path d=\"M7 1 13 9 7 17 1 9Z\" fill=\"#58e1c3\"/><path d=\"M7 5v8\" stroke=\"#09171e\" stroke-width=\"2\"/></svg></div>",
-      "css": ".ds-slider{position:relative;width:302px;height:18px}.ds-slider-rail{position:absolute;left:0;right:0;top:7px;height:4px;background:#304851}.ds-slider-fill{display:block;width:60%;height:4px;background:#58e1c3}.ds-slider-knot{position:absolute;left:calc(60% - 7px);top:0}.ds-slider:hover .ds-slider-fill{background:#f2f3e9}.ds-slider:focus-visible{outline:1px solid #58e1c3;outline-offset:-1px}"
+      "description": "Design-panel translation of the native blue slider and the authored 14 by 18 diamond knot handle.",
+      "html": "<div class=\"ds-slider\" role=\"slider\" aria-label=\"Effects volume\" aria-valuemin=\"0\" aria-valuemax=\"100\" aria-valuenow=\"60\" tabindex=\"0\"><span class=\"ds-slider-rail\"><span class=\"ds-slider-fill\"></span></span><svg class=\"ds-slider-knot\" aria-hidden=\"true\" xmlns=\"http://www.w3.org/2000/svg\" width=\"14\" height=\"18\" viewBox=\"0 0 14 18\"><path d=\"M7 1 13 9 7 17 1 9Z\" fill=\"#008cff\"/><path d=\"M7 5v8\" stroke=\"#08090b\" stroke-width=\"2\"/></svg></div>",
+      "css": ".ds-slider{position:relative;width:302px;height:18px}.ds-slider-rail{position:absolute;left:0;right:0;top:7px;height:4px;background:#35383e}.ds-slider-fill{display:block;width:60%;height:4px;background:#008cff}.ds-slider-knot{position:absolute;left:calc(60% - 7px);top:0}.ds-slider:hover .ds-slider-fill{background:#f2f3e9}.ds-slider:focus-visible{outline:1px solid #008cff;outline-offset:-1px}"
     },
     {
-      "name": "Rewind History Meter",
+      "name": "Minimal Gameplay HUD",
       "kind": "custom",
       "refersTo": "rewind-rail",
-      "description": "Design-panel translation of ThreadMeter: a flat 140 by 2 logical-pixel rail, a proportional teal fill and a separate stored-seconds label. The sample shows 3.6 seconds of six available.",
-      "html": "<div class=\"ds-rewind\"><span class=\"ds-rewind-label\">3.6 s rewind</span><div class=\"ds-rewind-rail\" role=\"meter\" aria-label=\"Stored rewind history\" aria-valuemin=\"0\" aria-valuemax=\"6\" aria-valuenow=\"3.6\"><span class=\"ds-rewind-fill\"></span></div></div>",
-      "css": ".ds-rewind{width:140px;color:#58e1c3;font-family:Manrope,sans-serif;font-size:8px;font-weight:550}.ds-rewind-label{display:block;height:13px}.ds-rewind-rail{width:140px;height:2px;background:#304851}.ds-rewind-fill{display:block;width:60%;height:2px;background:#58e1c3}"
+      "description": "Design-panel translation of the 640 by 360 logical canvas HUD: only the upper-right Godot pause icon and unlabeled 72 by 2 bottom-left history rail. Sample fill is 60 percent; the game shows no numeric label.",
+      "html": "<div class=\"ds-hud\"><div class=\"ds-history\" role=\"meter\" aria-label=\"Stored rewind history\" aria-valuemin=\"0\" aria-valuemax=\"6\" aria-valuenow=\"3.6\"><span class=\"ds-history-fill\"></span></div><button class=\"ds-pause\" aria-label=\"Pause\"><svg class=\"ds-pause-icon\" aria-hidden=\"true\" xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\"><path fill=\"#e0e0e0\" d=\"M4 3a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1V4a1 1 0 0 0-1-1zm6 0a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1V4a1 1 0 0 0-1-1z\"/></svg></button></div>",
+      "css": ".ds-hud{position:relative;width:640px;height:360px;background:#08090b}.ds-history{position:absolute;left:16px;top:345px;width:72px;height:2px;background:#35383e}.ds-history-fill{display:block;width:60%;height:2px;background:#008cff}.ds-pause{position:absolute;left:603px;top:9px;box-sizing:border-box;display:flex;align-items:center;justify-content:center;width:24px;height:30px;padding:3px 0;background:transparent;border:0;border-radius:0}.ds-pause:hover{background:#30343c}.ds-pause:active{background:#222936}.ds-pause:focus-visible{outline:1px solid #008cff;outline-offset:-1px}.ds-pause-icon{width:16px;height:16px}"
+    },
+    {
+      "name": "Browser Help Panel",
+      "kind": "custom",
+      "description": "Translation of the dedicated browser How to play panel. It appears on the help page and carries instructions and room objectives outside active gameplay.",
+      "html": "<section class=\"ds-help\" aria-label=\"How to play\"><div class=\"ds-help-head\"><h1>The thread</h1><button class=\"ds-help-back\">Back to pause</button></div><p class=\"ds-help-copy\">Stitch beside square terminals to weave bridges and power relays.\nGrapple a round anchor; steer to swing.\nHold Rewind to follow your real trail.</p><p>Progress saves in this browser. Clearing site data removes it.</p></section>",
+      "css": ".ds-help{background:var(--ink,#08090b);color:var(--paper,#f2f3e9);padding:clamp(20px,5vw,70px);font:550 14px/1.6 Manrope,sans-serif}.ds-help-head{display:flex;justify-content:space-between;align-items:center;gap:20px;max-width:850px}.ds-help h1{font:600 40px/1 Barlow,sans-serif;margin:0}.ds-help p{max-width:65ch;margin:26px 0;color:var(--secondary,#afb3bb)}.ds-help .ds-help-copy{white-space:pre-line;color:var(--paper,#f2f3e9);font-size:16px}.ds-help-back{font:inherit;color:var(--paper,#f2f3e9);background:#1c1e23;border:1px solid var(--rule,#35383e);min-height:44px;padding:8px 14px}.ds-help-back:hover{background:#343840}.ds-help-back:focus-visible{outline:2px solid var(--thread,#008cff);outline-offset:3px}@media(max-width:620px){.ds-help h1{font-size:34px}}"
     }
   ],
   "narrative": {
-    "northStar": "Carry the last signal.",
-    "overview": "The signal's thread connects the game identity to its mechanics. Use crisp native vector geometry and a quiet night-time facility. The opening screen pairs condensed lettering with the actual courier's visual grammar and one flowing teal scarf. Threadwork reuses the same visual world rather than introducing another style.\n\nThis records the implemented native Godot system. The project has no approved raster comp, FORM seed or QUALITY BAR card.",
+    "northStar": "Electric Foundry",
+    "overview": "Carry the last signal through a tactile, almost-black industrial foundry. Worn charcoal concrete and metal, layered machinery and a few amber lamps create depth behind the original warm-white courier. A continuous electric blue scarf and thread ties the identity to its working tools. Violet saws and pink barriers and spikes carry concentrated danger color.\n\nThe user approved the second displayed design, preserved in docs/design/electric_foundry_reference.png. It replaces the earlier teal/coral vector-only direction. The implementation combines generated environment, material and haze textures with native Godot silhouettes, collision geometry and interface controls. Exact asset prompts and provenance live in docs/foundry_asset_provenance.json.",
     "keyCharacteristics": [
-      "Native vector geometry with quiet architectural depth.",
-      "A continuous teal thread shared by identity and functional tools.",
-      "Distinct silhouettes for the courier, hazards, terminals and fragments."
+      "Tactile black, charcoal and gray industrial layers behind crisp playable geometry.",
+      "A continuous electric blue thread shared by identity and functional tools.",
+      "Violet, pink and amber hazard accents with distinct silhouettes.",
+      "A gameplay canvas with only a pause icon and a small history rail."
     ],
     "rules": [],
     "dos": [
       "Do keep the courier, landing edges, dangerous silhouettes and thread states readable first.",
-      "Do use the same vocabulary in the HUD, lessons and settings.",
+      "Do keep active gameplay to the pause icon and bottom-left history rail.",
+      "Do place instructions and room objectives in How to play.",
+      "Do keep material and haze behind sharp collision and hazard silhouettes.",
       "Do preserve functional tool paths when reduced effects are enabled.",
       "Do keep motion bounded and retry effects brief."
     ],
     "donts": [
       "Don't replace actionable shapes with decoration or imply inactive dotted bridges are solid.",
       "Don't add busy grids behind UI text or hide focus.",
-      "Don't cover lesson pit hazards with a bottom prompt strip.",
+      "Don't add timers, titles, hints, objectives, instruction bars or browser headers and footers during play.",
       "Don't copy reference-game assets."
     ]
   }

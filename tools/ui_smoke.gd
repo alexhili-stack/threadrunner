@@ -30,11 +30,16 @@ func key(code: int) -> void:
 	event.physical_keycode = code
 	event.pressed = true
 	Input.parse_input_event(event)
+	# GUI input needs render processing; gameplay polling also needs physics ticks.
 	await frames(2)
+	for tick in 3:
+		await physics_frame
 	event = event.duplicate()
 	event.pressed = false
 	Input.parse_input_event(event)
 	await frames(2)
+	for tick in 3:
+		await physics_frame
 
 
 func execute() -> void:
@@ -48,6 +53,15 @@ func execute() -> void:
 	check("keyboard confirm starts gameplay", app.page == "game")
 	check("player uses configured jump action", InputMap.has_action("jump"))
 	check("rewind meter stays within compact HUD", app.thread_meter.size.y <= 3)
+	check(
+		"gameplay has no instruction or timer overlays",
+		not app.hint.visible and not app.hud.visible and app.control_hint == null
+	)
+	var visible_game_text: bool = false
+	for child: Node in app.ui.get_children():
+		if child is Label and child.visible and not child.text.is_empty():
+			visible_game_text = true
+	check("playing canvas contains no visible text labels", not visible_game_text)
 	await capture("gameplay_1280")
 	await key(KEY_ESCAPE)
 	check("keyboard pause", app.page == "pause" and app.run.paused)
@@ -260,7 +274,13 @@ func execute() -> void:
 	app.inputs.rebind("thread_stitch", KEY_G)
 	app.start_level(40)
 	await frames(3)
-	check("lesson instruction follows thread remapping", "G beside" in app.hint.text)
+	check("lesson instructions stay off the playfield", not app.hint.visible)
+	app.show_help("pause")
+	await frames(3)
+	check("help follows thread remapping", "G  Stitch" in app.help_text.text)
+	check("help keeps gameplay paused", app.run.paused and app.page == "help")
+	app._help_back()
+	check("help returns to pause", app.page == "pause")
 	app.inputs.configure()
 	app.start_level(41)
 	move = move.duplicate()

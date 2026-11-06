@@ -24,7 +24,7 @@ play.addEventListener("click",()=>{
   frame.src="game/index.html"+(localQA?"?qa=1":"");
 });
 function togglePause(){releaseAll();send("pause",true);setTimeout(()=>{send("pause",false);frame.contentWindow?.postMessage({type:"threadrunner-focus"},location.origin);},60);}
-pause.addEventListener("click",togglePause);touchPause.addEventListener("click",togglePause);
+pause.addEventListener("click",togglePause);touchPause.addEventListener("click",togglePause);document.getElementById("help-return").addEventListener("click",togglePause);
 function toolState(action,name,detail,available,active){
   const button=touch.querySelector(`[data-action="${action}"]`);
   button.querySelector(".action-name").textContent=name;
@@ -48,7 +48,7 @@ addEventListener("message",event=>{
   }
   if(message.type==="threadrunner-status"){
     ready=true;boot.hidden=true;progress.hidden=true;
-    const data=message.status;state.textContent=JSON.stringify(data);for(const [key,value]of Object.entries(data))state.dataset[key]=String(value);
+    const data=message.status;document.body.dataset.page=data.page;state.textContent=JSON.stringify(data);for(const [key,value]of Object.entries(data))state.dataset[key]=String(value);
     const playing=data.page==="game";pause.disabled=!playing&&data.page!=="pause";pause.textContent=data.page==="pause"?"Resume":"Pause";
     for(const button of touch.querySelectorAll("[data-action]"))button.disabled=!playing;
     touchPause.disabled=pause.disabled;touchPause.textContent=pause.textContent;
@@ -58,7 +58,10 @@ addEventListener("message",event=>{
       toolState("thread_rewind","Rewind",data.rewind_exhausted?"Release to refill":data.rewinding?"Returning":`${Number(data.rewind_seconds||0).toFixed(1)} s stored`,Number(data.rewind_seconds)>0&&!data.rewind_exhausted,!!data.rewinding);
       touch.querySelector('[data-action="jump"] .action-state').textContent=data.tether?"Release upward":"Hold for height";
     }
-    objective.hidden=!playing||!data.objective;
+    document.getElementById("help-panel").hidden=data.page!=="help";
+    if(data.page==="help"&&lastPage!=="help")document.getElementById("help-return").focus({preventScroll:true});
+    document.getElementById("help-copy").textContent=data.help||"";
+    objective.hidden=data.page!=="help"||!data.objective;
     if(objective.textContent!==(data.objective||""))objective.textContent=data.objective||"";
     if(!playing)releaseAll();
     if(data.page!==lastPage||data.room!==lastRoom){status.textContent=playing?`Room ${data.room} · ${data.name}`:data.page==="pause"?"Paused. Your thread is waiting.":data.page==="complete"?"Signal delivered. Choose your next room.":data.page==="menu"?"Choose Thread lessons to learn stitching, swinging and rewind.":"Choose an option in the game.";lastPage=data.page;lastRoom=data.room;}

@@ -23,7 +23,7 @@ for folder in ['scripts','scenes','data','assets']:
             source_hash.update(path.read_bytes())
 source_hash.update((ROOT/'project.godot').read_bytes())
 revision=subprocess.run(['git','rev-parse','--verify','HEAD'],cwd=ROOT,capture_output=True,text=True)
-manifest={'build_id':'threadrunner-1.2.0-local','godot':'4.7.2.stable.official.ed1daf0bf','target':'Windows x86_64','source_revision':revision.stdout.strip() if revision.returncode==0 else None,'source_sha256':source_hash.hexdigest(),'files':{},'qa_report':'docs/visual_acceptance_report.md','runtime_verified':False}
+manifest={'build_id':'threadrunner-1.4.0-local','godot':'4.7.2.stable.official.ed1daf0bf','target':'Windows x86_64','source_revision':revision.stdout.strip() if revision.returncode==0 else None,'source_sha256':source_hash.hexdigest(),'files':{},'qa_report':'docs/qa_report.md','runtime_verified':False}
 for path in sorted(target.glob('*')):
     if path.is_file() and path.suffix in ['.exe','.pck']:
         manifest['files'][path.name]={'bytes':path.stat().st_size,'sha256':hashlib.sha256(path.read_bytes()).hexdigest()}

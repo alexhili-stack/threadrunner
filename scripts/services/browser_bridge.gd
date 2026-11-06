@@ -60,6 +60,8 @@ func _process(delta: float) -> void:
 		"touch": app.last_input_touch,
 		"muted": app.saves.data.settings.mute
 	}
+	if app.page == "help" and is_instance_valid(app.help_text):
+		data["help"] = app.help_text.text
 	if is_instance_valid(app.level):
 		data["name"] = LevelCatalog.entry(app.level_index).display_name
 		data["x"] = app.level.player.position.x

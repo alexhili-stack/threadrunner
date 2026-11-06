@@ -42,7 +42,9 @@ func _draw() -> void:
 	var origin: Vector2 = (size - world_size * factor) * 0.5
 	draw_set_transform(origin)
 	for rect: Rect2 in geometry:
-		draw_rect(Rect2(rect.position * scale_factor, rect.size * scale_factor), Color("88a5ad"))
+		draw_rect(
+			Rect2(rect.position * scale_factor, rect.size * scale_factor), ThreadStyle.SECONDARY
+		)
 	for rect: Rect2 in hazards + teeth:
 		draw_rect(Rect2(rect.position * scale_factor, rect.size * scale_factor), ThreadStyle.DANGER)
 	for rect: Rect2 in beams:

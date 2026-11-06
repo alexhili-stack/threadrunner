@@ -81,3 +81,32 @@ The native Windows capture API timed out on the packaged OpenGL window and the w
 - Manifest source SHA-256: `106b6a0339263067e2905b3480781e1cd439d0bb2485f8a4f4f3ad7316fb4984`. Live source and package files match it.
 - Machine-readable evidence and unit XML: docs/evidence/v1.2. Full process logs remain in artifacts.
 - Research: docs/visual_research.md. Mechanic details: docs/thread_tool.md. Rights: docs/asset_provenance.md and third_party/fonts.
+
+## Electric Foundry 1.4 verification — 6 November 2026
+
+The user selected concept 2. This revision replaces presentation with charcoal foundry imagery, blue thread, violet/pink/amber hazard haze and a quiet playing canvas. All 45 room geometries, stable IDs, movement configuration and save schema are preserved. Instructions and current lesson objectives moved to Pause → How to play. Asset prompts and hashes are in docs/foundry_asset_provenance.json.
+
+| Executed check | Actual outcome |
+|---|---|
+| Canonical tools/qa.py --ui --soak --export, with retained targeted rechecks | PASS |
+| Formatter, lint, editor import | PASS |
+| GdUnit4 | 49 discovered cases, zero failures/errors |
+| Failure propagation / empty discovery probes | Expected failure exit 100 and empty suite rejected |
+| Scenes / fixtures | 45 scenes, 85 fixture files validated |
+| Native route replays | 255 successful fragment/ordinary clears; 40 no-jump and 5 no-tool negatives rejected |
+| Native graphical UI | Fresh report 38/38 PASS |
+| Native real-time soak | 917.056 seconds, 82 room cycles, zero failures and final 0 orphans |
+| Windows standalone release processes | 43/43 checks PASS; 11 representative fragment clears, completion, restart and save/relaunch; test add-on excluded |
+| Browser release controller replays | 410/410 PASS;45 fragment routes × 3, zero-death clears, completion, restart and save roundtrip |
+| Browser manual review | Keyboard and active held-touch movement observed; pause/help/back;1672×941 desktop and 390×844 portrait; no captured console errors |
+| Independent finishing review | Both scored P 2 fixes resolved; design-qa.md passed |
+
+The first updated graphical suite reported 37 checks against the required 38 and correctly failed. Automatic approval review rejected lowering that gate. A meaningful visible-label assertion was added instead. Its first lambda form triggered a Godot diagnostic-script parse error; an explicit loop retains the same assertion. A subsequent Rewind check exposed a synthetic-key timing issue. Render-only holds could miss physics polling; physics-only holds did not dispatch the menu GUI reliably. The final helper waits for both render processing and physics ticks. All 38 original/final assertions now pass, with failed logs and recheck snapshots retained in artifacts. No production movement change or assertion reduction was used.
+
+Hidden-browser pointer samples did not move the character because the browser coalesced input before rendering. An active visible coordinate hold moved x 69.667→303.333 through the same unchanged touch bridge. This is recorded separately from physical-phone evidence.
+
+Actual Godot captures cover rooms 4,30,40,42,45, help, selected chapter/settings/toggle and menu. The comparison preserves source and actual pixels side by side; reference geometry is illustrative, while authored rooms remain intact. The reviewer approved the two scored fixes: isolated help with a real lesson objective and accessible small selected/pressed text. Unavailable Impeccable launcher/detector/process artifacts are disclosed in design-qa.md; no unperformed automated visual-diff result is claimed.
+
+The Windows 1.4 local ZIP was rebuilt and runtime-verified. Its manifest source SHA-256 matches the working tree; source_revision records its precommit base. The public Windows 1.2 release remains a separate frozen download. Browser 1.4 export is single-threaded,23 static files and approximately 45 MB. Public deployment verification is recorded in docs/public_qa.md after publication.
+
+NOT RUN: physical phones, Safari, physical controller hardware/disconnect, subjective listening, human difficulty/fun, full screen-reader compatibility, native macOS/Linux exports. Screenshots are actual source-runtime/actual browser renders, not claims of packaged-window capture.
