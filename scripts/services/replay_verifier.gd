@@ -57,6 +57,8 @@ static func execute(app: Node2D, fixture_path: String, output_path: String) -> v
 				}
 			)
 			await app.get_tree().process_frame
+			# process_frame precedes Node._process; allow the pending UI to render.
+			await app.get_tree().process_frame
 			checks.append(
 				{"name": "room %02d completion UI" % (index + 1), "pass": app.page == "complete"}
 			)
