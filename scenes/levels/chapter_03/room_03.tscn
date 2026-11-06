@@ -1,0 +1,24 @@
+[gd_scene load_steps=2 format=3]
+[ext_resource type="Script" path="res://scripts/gameplay/level_root.gd" id="1"]
+[node name="CurrentLevel" type="Node2D"]
+script = ExtResource("1")
+level_id = "chapter_03_room_03"
+spawn = Vector2(40, 317)
+exit_position = Vector2(464, 228)
+fragment_position = Vector2(224, 102)
+platforms = Array[Rect2]([Rect2(0, 64, 16, 280), Rect2(624, 64, 16, 280), Rect2(16, 328, 608, 16), Rect2(528, 152, 16, 176), Rect2(480, 152, 16, 96), Rect2(16, 152, 48, 16), Rect2(128, 152, 288, 16), Rect2(16, 248, 464, 16)])
+spikes = Array[Rect2]([Rect2(240, 316, 32, 12)])
+ceiling_spikes = Array[Rect2]([])
+vents = Array[Rect2]([])
+movers = Array[Vector4]([])
+gates = Array[Rect2]([])
+gate_period = 3.2
+gate_open_time = 1.8
+route = Array[Vector2]([Vector2(88, 317), Vector2(208, 317), Vector2(256.0, 282), Vector2(304, 317), Vector2(512, 317), Vector2(514, 257), Vector2(514, 199), Vector2(514, 143), Vector2(456, 123), Vector2(384, 141), Vector2(152, 141), Vector2(96, 237), Vector2(464, 237)])
+purpose = "Go up the wall and come back across the upper platforms."
+chapter = 3
+required_skill = "wall"
+route_markers = Array[Vector2]([Vector2(160, 309), Vector2(496, 237), Vector2(352, 133)])
+
+thread_anchors = Array[Vector2]([Vector2(320, 274), Vector2(248, 194), Vector2(272, 98)])
+stitch_pairs = Array[Vector4]([Vector4(56, 152, 136, 152)])

@@ -1,0 +1,20 @@
+[gd_scene load_steps=2 format=3]
+[ext_resource type="Script" path="res://scripts/gameplay/level_root.gd" id="1"]
+[node name="CurrentLevel" type="Node2D"]
+script = ExtResource("1")
+level_id = "chapter_05_room_03"
+spawn = Vector2(40, 317)
+exit_position = Vector2(600, 308)
+fragment_position = Vector2(470, 308)
+platforms = Array[Rect2]([Rect2(16, 328, 608, 16)])
+spikes = Array[Rect2]([])
+gates = Array[Rect2]([Rect2(320, 218, 12, 110)])
+route = Array[Vector2]([Vector2(116, 317), Vector2(600, 317)])
+thread_anchors = Array[Vector2]([Vector2(300, 220)])
+stitch_pairs = Array[Vector4]([Vector4(116, 328, 188, 328)])
+purpose = "Stitch the square terminals to power the relay and hold the gate open."
+chapter = 5
+required_skill = "thread_relay"
+thread_goal = "relay"
+gate_period = 5.0
+gate_open_time = 0.75

@@ -1,0 +1,14 @@
+[gd_scene load_steps=2 format=3]
+[ext_resource type="Script" path="res://scripts/gameplay/level_root.gd" id="1"]
+[node name="CurrentLevel" type="Node2D"]
+script = ExtResource("1")
+level_id = "visual_test"
+spawn = Vector2(40, 317)
+exit_position = Vector2(600, 308)
+fragment_position = Vector2(368, 198)
+platforms = Array[Rect2]([Rect2(0, 56, 16, 288), Rect2(624, 56, 16, 288), Rect2(16, 328, 608, 16), Rect2(152, 280, 64, 16), Rect2(328, 232, 80, 16), Rect2(504, 280, 64, 16)])
+spikes = Array[Rect2]([Rect2(240, 316, 64, 12)])
+movers = Array[Vector4]([Vector4(270, 184, 112, 4.4)])
+gates = Array[Rect2]([Rect2(462, 224, 12, 104)])
+route = Array[Vector2]([Vector2(184, 269), Vector2(368, 221), Vector2(536, 269), Vector2(600, 317)])
+purpose = "Clockwork test: wait, jump, commit."

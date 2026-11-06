@@ -1,0 +1,18 @@
+[gd_scene load_steps=2 format=3]
+[ext_resource type="Script" path="res://scripts/gameplay/level_root.gd" id="1"]
+[node name="CurrentLevel" type="Node2D"]
+script = ExtResource("1")
+level_id = "chapter_05_room_02"
+spawn = Vector2(40, 289)
+exit_position = Vector2(600, 280)
+fragment_position = Vector2(500, 280)
+platforms = Array[Rect2]([Rect2(16, 300, 216, 16), Rect2(440, 300, 184, 16)])
+spikes = Array[Rect2]([Rect2(232, 344, 208, 16)])
+gates = Array[Rect2]([])
+route = Array[Vector2]([Vector2(200, 289), Vector2(350, 280), Vector2(500, 289), Vector2(600, 289)])
+thread_anchors = Array[Vector2]([Vector2(320, 100)])
+stitch_pairs = Array[Vector4]([])
+purpose = "F grabs a round anchor. Steer to swing. Jump releases you upward."
+chapter = 5
+required_skill = "thread_grapple"
+thread_goal = "grapple"

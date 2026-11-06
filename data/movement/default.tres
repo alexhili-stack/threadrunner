@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="MovementConfig" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/movement_config.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+
+thread_grapple_reach = 240.0
+thread_stitch_reach = 42.0
+thread_swing_acceleration = 700.0
+thread_swing_speed = 380.0
+thread_release_jump = -300.0
+thread_history_seconds = 6.0
+thread_rewind_steps = 3

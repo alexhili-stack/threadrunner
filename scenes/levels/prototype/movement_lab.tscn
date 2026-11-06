@@ -1,0 +1,14 @@
+[gd_scene load_steps=2 format=3]
+[ext_resource type="Script" path="res://scripts/gameplay/level_root.gd" id="1"]
+[node name="CurrentLevel" type="Node2D"]
+script = ExtResource("1")
+level_id = "movement_lab"
+spawn = Vector2(40, 317)
+exit_position = Vector2(600, 308)
+fragment_position = Vector2(353, 98)
+platforms = Array[Rect2]([Rect2(0, 56, 16, 288), Rect2(624, 56, 16, 288), Rect2(16, 328, 208, 16), Rect2(288, 328, 336, 16), Rect2(128, 280, 64, 16), Rect2(288, 232, 64, 16), Rect2(384, 152, 16, 176), Rect2(464, 120, 16, 208), Rect2(512, 264, 96, 16)])
+spikes = Array[Rect2]([])
+movers = Array[Vector4]([])
+gates = Array[Rect2]([])
+route = Array[Vector2]([Vector2(150, 317), Vector2(160, 238), Vector2(225, 211), Vector2(257, 150), Vector2(322, 109), Vector2(458, 212), Vector2(600, 317)])
+purpose = "Alternate walls. One jump button, no extra abilities."

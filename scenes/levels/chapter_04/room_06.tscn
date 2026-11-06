@@ -1,0 +1,25 @@
+[gd_scene load_steps=2 format=3]
+[ext_resource type="Script" path="res://scripts/gameplay/level_root.gd" id="1"]
+[node name="CurrentLevel" type="Node2D"]
+script = ExtResource("1")
+level_id = "chapter_04_room_06"
+spawn = Vector2(40,317)
+exit_position = Vector2(1240,148)
+fragment_position = Vector2(1104,114)
+world_size = Vector2(1280,360)
+chapter = 4
+platforms = Array[Rect2]([Rect2(0, 64, 16, 280), Rect2(1264, 64, 16, 280), Rect2(16, 328, 352, 16), Rect2(408, 328, 296, 16), Rect2(744, 328, 520, 16), Rect2(16, 248, 1120, 16), Rect2(1184, 288, 64, 16), Rect2(32, 208, 64, 16), Rect2(144, 168, 128, 16), Rect2(304, 168, 160, 16), Rect2(496, 168, 160, 16), Rect2(688, 168, 160, 16), Rect2(880, 168, 384, 16)])
+spikes = Array[Rect2]([Rect2(240, 316, 24, 12), Rect2(560, 316, 24, 12), Rect2(864, 316, 32, 12), Rect2(800, 236, 20, 12), Rect2(432, 236, 20, 12), Rect2(1008, 156, 20, 12)])
+ceiling_spikes = Array[Rect2]([])
+vents = Array[Rect2]([Rect2(176, 212, 32, 36)])
+movers = Array[Vector4]([Vector4(1048, 280, 32, 5.38), Vector4(416, 112, 40, 5.800000000000001)])
+gates = Array[Rect2]([Rect2(480, 264, 12, 64), Rect2(784, 104, 12, 64)])
+gate_period = 3.6
+gate_open_time = 2.1
+route = Array[Vector2]([Vector2(88, 317), Vector2(208, 317), Vector2(252.0, 282), Vector2(296, 317), Vector2(336, 317), Vector2(388.0, 282), Vector2(440, 317), Vector2(528, 317), Vector2(572.0, 282), Vector2(616, 317), Vector2(672, 317), Vector2(724.0, 282), Vector2(776, 317), Vector2(832, 317), Vector2(880.0, 282), Vector2(928, 317), Vector2(1152, 317), Vector2(1216, 277), Vector2(1104, 237), Vector2(852, 237), Vector2(810.0, 202), Vector2(768, 237), Vector2(484, 237), Vector2(442.0, 202), Vector2(400, 237), Vector2(128, 237), Vector2(64, 197), Vector2(176, 157), Vector2(224, 157), Vector2(384, 157), Vector2(576, 157), Vector2(768, 157), Vector2(944, 157), Vector2(976, 157), Vector2(1018.0, 122), Vector2(1060, 157), Vector2(1200, 157)])
+purpose = "Afterlight: read the next section, use safe pads, and keep the signal through the full relay."
+required_skill = "timing"
+route_markers = Array[Vector2]([Vector2(200, 309), Vector2(600, 309), Vector2(1000, 309), Vector2(1000, 229), Vector2(600, 229), Vector2(200, 229), Vector2(200, 149), Vector2(600, 149), Vector2(1000, 149)])
+
+thread_anchors = Array[Vector2]([Vector2(192, 274), Vector2(556, 274), Vector2(1004, 274), Vector2(576, 194), Vector2(208, 114), Vector2(384, 114), Vector2(576, 114), Vector2(768, 114)])
+stitch_pairs = Array[Vector4]([Vector4(360, 328, 416, 328), Vector4(696, 328, 752, 328), Vector4(264, 168, 312, 168)])

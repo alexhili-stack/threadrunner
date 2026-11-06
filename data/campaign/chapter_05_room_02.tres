@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="LevelDefinition" load_steps=3 format=3]
+[ext_resource type="Script" path="res://scripts/resources/level_definition.gd" id="1"]
+[ext_resource type="PackedScene" path="res://scenes/levels/chapter_05/room_02.tscn" id="2"]
+[resource]
+script = ExtResource("1")
+stable_id = "chapter_05_room_02"
+display_name = "Swing the signal"
+chapter = 5
+scene = ExtResource("2")
+next_level_id = "chapter_05_room_03"
+target_seconds = 20.0
+has_fragment = true

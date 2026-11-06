@@ -1,0 +1,24 @@
+[gd_scene load_steps=2 format=3]
+[ext_resource type="Script" path="res://scripts/gameplay/level_root.gd" id="1"]
+[node name="CurrentLevel" type="Node2D"]
+script = ExtResource("1")
+level_id = "chapter_01_room_10"
+spawn = Vector2(40, 317)
+exit_position = Vector2(600, 148)
+fragment_position = Vector2(480, 114)
+platforms = Array[Rect2]([Rect2(0, 64, 16, 280), Rect2(624, 64, 16, 280), Rect2(16, 328, 272, 16), Rect2(328, 328, 296, 16), Rect2(16, 248, 480, 16), Rect2(544, 288, 64, 16), Rect2(32, 208, 64, 16), Rect2(144, 168, 96, 16), Rect2(272, 168, 96, 16), Rect2(400, 168, 224, 16)])
+spikes = Array[Rect2]([Rect2(208, 316, 32, 12), Rect2(352, 236, 20, 12), Rect2(256, 156, 32, 12)])
+ceiling_spikes = Array[Rect2]([Rect2(176, 264, 112, 8)])
+vents = Array[Rect2]([])
+movers = Array[Vector4]([])
+gates = Array[Rect2]([])
+gate_period = 3.2
+gate_open_time = 1.8
+route = Array[Vector2]([Vector2(88, 317), Vector2(176, 317), Vector2(224.0, 282), Vector2(272, 317), Vector2(308.0, 282), Vector2(360, 317), Vector2(512, 317), Vector2(576, 277), Vector2(464, 237), Vector2(404, 237), Vector2(362.0, 202), Vector2(320, 237), Vector2(128, 237), Vector2(64, 197), Vector2(176, 157), Vector2(224, 157), Vector2(272.0, 122), Vector2(320, 157), Vector2(440, 157), Vector2(580, 157)])
+purpose = "Departure test: short jump, high jump, turn and climb."
+chapter = 1
+required_skill = "variable_jump"
+route_markers = Array[Vector2]([Vector2(160, 309), Vector2(464, 229), Vector2(208, 149)])
+
+thread_anchors = Array[Vector2]([Vector2(152, 274), Vector2(476, 274), Vector2(256, 194), Vector2(192, 114), Vector2(320, 114), Vector2(512, 114)])
+stitch_pairs = Array[Vector4]([Vector4(280, 328, 336, 328), Vector4(232, 168, 280, 168), Vector4(360, 168, 408, 168)])

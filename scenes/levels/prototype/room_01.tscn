@@ -1,0 +1,14 @@
+[gd_scene load_steps=2 format=3]
+[ext_resource type="Script" path="res://scripts/gameplay/level_root.gd" id="1"]
+[node name="CurrentLevel" type="Node2D"]
+script = ExtResource("1")
+level_id = "prototype_01"
+spawn = Vector2(40, 317)
+exit_position = Vector2(600, 308)
+fragment_position = Vector2(390, 235)
+platforms = Array[Rect2]([Rect2(0, 56, 16, 288), Rect2(624, 56, 16, 288), Rect2(16, 328, 608, 16), Rect2(152, 280, 80, 16), Rect2(352, 264, 80, 16)])
+spikes = Array[Rect2]([])
+movers = Array[Vector4]([])
+gates = Array[Rect2]([])
+route = Array[Vector2]([Vector2(188, 269), Vector2(390, 253), Vector2(600, 317)])
+purpose = "Hold jump to go higher. Release to cut your ascent."

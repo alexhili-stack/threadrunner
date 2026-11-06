@@ -1,0 +1,15 @@
+# Architecture
+
+GameRoot owns the application pages and connects services to the gameplay session. LevelContainer holds a scene-authored LevelRoot. RunController owns lifecycle, deaths, time, pause and completion. LevelRoot builds StaticBody2D geometry from its scene's Rect2 arrays, owns the player and evaluates forgiving spike, circular saw and timed-gate hitboxes. PlayerController uses CharacterBody2D.move_and_slide; PlayerVisuals draws the figure and scarf without editing collisions.
+
+LevelCatalog maps stable IDs and order to data/campaign LevelDefinition Resources containing names, scene references, chapters, next IDs, target times and fragment availability. SaveService stores schema 2, progress, PBs, earned fragments, deaths and settings by stable ID. It sanitises input and writes a flushed temporary file before replacement. Future-schema files are preserved and writes refused. AudioService owns exactly eight SFX voices and Master/Music/Effects routing. Two bounded music voices crossfade four original chapter loops; pause/menu contexts duck the music. InputService owns keyboard bindings and controller action mappings. PlatformService is standalone and has no Steam dependency.
+
+Lifecycle: READY -> PLAYING -> DYING -> RESETTING -> PLAYING; PLAYING -> COMPLETED. Lethal contact wins over exit/fragment on the same tick. Completion is terminal until explicit restart or room transition. Simulation pauses independently of scene-tree UI processing. No timers or deferred gameplay callbacks survive resets.
+
+Reset uses LevelRoot.reset_for_attempt, resetting player contact freshness, velocity, timers, hazards, gate phase, fragment and attempt time in place. This avoids room reconstruction on every death; canonical stress tests measure node counts and latency. A 100 ms death presentation is counted before restored control. This is an explicit implementation choice in place of an initial scene-reload prototype.
+
+Large rooms supply world_size; a player-follow Camera2D clamps to those bounds. Backdrops live in a background CanvasLayer, and HUD/UI remain screen-fixed. RoomPreview reads authored scenes without instantiating gameplay nodes into the tree. Ceiling teeth and telegraphed vents share LevelRoot hazard evaluation and the attempt-reset contract.
+
+Layout revision 2 archives previous-layout PBs in legacy_records. Completed IDs remain present with a zero marker until a new-layout time is earned, preserving progress without comparing incompatible routes. JSON times are verified within one microsecond, well below the 60 Hz physics tick; IDs and progress are exact.
+
+Version 1.2 adds ThreadTool as a LevelRoot child, with capped history, preallocated bridge bodies and authored thread points. PlayerController remains the sole movement body and applies shared-resource rope and rewind rules. RunController continues evaluating live hazards and time during rewind. Layout revision 3 archives earlier PBs while preserving progress. Five Threadwork scenes extend the catalog to 45 stable IDs.

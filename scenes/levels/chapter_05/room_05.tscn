@@ -1,0 +1,22 @@
+[gd_scene load_steps=2 format=3]
+[ext_resource type="Script" path="res://scripts/gameplay/level_root.gd" id="1"]
+[node name="CurrentLevel" type="Node2D"]
+script = ExtResource("1")
+level_id = "chapter_05_room_05"
+spawn = Vector2(40, 289)
+exit_position = Vector2(1220, 280)
+fragment_position = Vector2(1150, 280)
+world_size = Vector2(1280, 360)
+thread_checkpoint = Vector2(700, 284)
+platforms = Array[Rect2]([Rect2(16, 300, 180, 16), Rect2(444, 300, 316, 16), Rect2(1008, 300, 256, 16)])
+spikes = Array[Rect2]([Rect2(196, 344, 248, 16), Rect2(760, 344, 248, 16)])
+gates = Array[Rect2]([Rect2(1120, 190, 12, 110)])
+route = Array[Vector2]([Vector2(160, 289), Vector2(700, 289), Vector2(620, 289), Vector2(750, 289), Vector2(930, 250), Vector2(1220, 289)])
+thread_anchors = Array[Vector2]([Vector2(880, 95)])
+stitch_pairs = Array[Vector4]([Vector4(180, 300, 456, 300)])
+purpose = "Weave the bridge. Reach the relay and rewind. Swing across. Deliver the signal."
+chapter = 5
+required_skill = "thread_all"
+thread_goal = "all"
+gate_period = 5.0
+gate_open_time = 0.75

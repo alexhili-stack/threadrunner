@@ -1,0 +1,149 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-06T18:54:28Z",
+  "title": "Design System: Threadrunner",
+  "extensions": {
+    "colorMeta": {
+      "ink": {
+        "role": "neutral",
+        "displayName": "Quiet Ink"
+      },
+      "paper": {
+        "role": "neutral",
+        "displayName": "Warm Paper"
+      },
+      "secondary": {
+        "role": "neutral",
+        "displayName": "Blue-tinted Secondary Text"
+      },
+      "thread": {
+        "role": "primary",
+        "displayName": "Signal Teal"
+      },
+      "rule": {
+        "role": "neutral",
+        "displayName": "Quiet Rule"
+      },
+      "danger": {
+        "role": "secondary",
+        "displayName": "Coral Danger"
+      },
+      "fragment": {
+        "role": "tertiary",
+        "displayName": "Fragment Gold"
+      },
+      "platform": {
+        "role": "neutral",
+        "displayName": "Platform Metal"
+      },
+      "landing-edge": {
+        "role": "neutral",
+        "displayName": "Pale Landing Edge"
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Title Display",
+        "purpose": "Two-line opening title."
+      },
+      "heading": {
+        "displayName": "Page Heading",
+        "purpose": "Condensed page headings; related condensed sizes serve overlays, room titles and timers."
+      },
+      "body": {
+        "displayName": "Controls and Body",
+        "purpose": "Manrope controls with the actual 550-weight OpenType variation."
+      },
+      "metadata": {
+        "displayName": "Quiet Metadata",
+        "purpose": "Gameplay hints, status and navigation context; control prompts use a smaller local override."
+      }
+    },
+    "shadows": [],
+    "motion": [
+      {
+        "name": "rewind-history",
+        "value": "360 position samples / 6 seconds at 60 Hz",
+        "purpose": "Bounded functional history; the rail reports its stored duration."
+      },
+      {
+        "name": "scarf-joints",
+        "value": "8",
+        "purpose": "Short flowing courier ribbon, separate from rewind history."
+      },
+      {
+        "name": "movement-pulse",
+        "value": "0.18s",
+        "purpose": "Bounded jump, wall-jump and landing feedback in PlayerVisuals."
+      },
+      {
+        "name": "reduced-effects",
+        "value": "decorative only; preserve tool paths",
+        "purpose": "Reduce decorative trails, scarf sway, pulses and menu motion while retaining bridges, tethers, rewind routes and hazard information."
+      }
+    ],
+    "breakpoints": []
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "primary-button",
+      "description": "Design-panel translation of the native Godot primary action: teal fill, ink text and paper focus outline.",
+      "html": "<button class=\"ds-primary\">Begin the run</button>",
+      "css": ".ds-primary{box-sizing:border-box;height:30px;width:242px;padding:3px 10px;background:#58e1c3;color:#09171e;border:0;border-radius:0;text-align:left;font-family:Manrope,sans-serif;font-size:12px;font-weight:550}.ds-primary:hover{background:#f2f3e9}.ds-primary:active{background:#9aead7}.ds-primary:focus-visible{outline:1px solid #f2f3e9;outline-offset:-1px}"
+    },
+    {
+      "name": "Secondary Button",
+      "kind": "button",
+      "refersTo": "secondary-button",
+      "description": "Design-panel translation of the native ruled button and its hover, pressed, disabled and teal focus states.",
+      "html": "<button class=\"ds-secondary\">Room select</button>",
+      "css": ".ds-secondary{box-sizing:border-box;height:30px;width:200px;padding:3px 10px;background:rgba(15.3,33.15,40.8,.4);color:#f2f3e9;border:0;border-bottom:1px solid #304851;border-radius:0;text-align:left;font-family:Manrope,sans-serif;font-size:12px;font-weight:550}.ds-secondary:hover{background:#1b343d;border-bottom-color:transparent}.ds-secondary:active{background:#23464a;color:#58e1c3}.ds-secondary:focus-visible{outline:1px solid #58e1c3;outline-offset:-1px}.ds-secondary:disabled{background:#0e2028;color:#718991;border-bottom-color:transparent}"
+    },
+    {
+      "name": "Chapter Tabs",
+      "kind": "nav",
+      "description": "Design-panel translation of the native chapter navigation. The selected tab uses a teal label and filled state; the game has five chapter tabs.",
+      "html": "<nav class=\"ds-chapters\" aria-label=\"Chapters\"><button class=\"ds-chapter\" aria-current=\"page\">Boot</button><button class=\"ds-chapter\">Clockwork</button><button class=\"ds-chapter\">Last thread</button><button class=\"ds-chapter\">Afterlight</button><button class=\"ds-chapter\">Threadwork</button></nav>",
+      "css": ".ds-chapters{display:flex;gap:8px}.ds-chapter{box-sizing:border-box;width:112px;height:30px;padding:3px 10px;background:rgba(15.3,33.15,40.8,.4);color:#f2f3e9;border:0;border-bottom:1px solid #304851;border-radius:0;text-align:left;font-family:Manrope,sans-serif;font-size:12px;font-weight:550}.ds-chapter[aria-current=page]{background:#23464a;color:#58e1c3;border-bottom-color:transparent}.ds-chapter:hover{background:#1b343d;border-bottom-color:transparent}.ds-chapter:active{background:#23464a;color:#58e1c3}.ds-chapter:focus-visible{outline:1px solid #58e1c3;outline-offset:-1px}"
+    },
+    {
+      "name": "Knot Slider",
+      "kind": "input",
+      "description": "Design-panel translation of the native slider rail and the authored 14 by 18 diamond knot handle.",
+      "html": "<div class=\"ds-slider\" role=\"slider\" aria-label=\"Effects volume\" aria-valuemin=\"0\" aria-valuemax=\"100\" aria-valuenow=\"60\" tabindex=\"0\"><span class=\"ds-slider-rail\"><span class=\"ds-slider-fill\"></span></span><svg class=\"ds-slider-knot\" xmlns=\"http://www.w3.org/2000/svg\" width=\"14\" height=\"18\" viewBox=\"0 0 14 18\" aria-hidden=\"true\"><path d=\"M7 1 13 9 7 17 1 9Z\" fill=\"#58e1c3\"/><path d=\"M7 5v8\" stroke=\"#09171e\" stroke-width=\"2\"/></svg></div>",
+      "css": ".ds-slider{position:relative;width:302px;height:18px}.ds-slider-rail{position:absolute;left:0;right:0;top:7px;height:4px;background:#304851}.ds-slider-fill{display:block;width:60%;height:4px;background:#58e1c3}.ds-slider-knot{position:absolute;left:calc(60% - 7px);top:0}.ds-slider:hover .ds-slider-fill{background:#f2f3e9}.ds-slider:focus-visible{outline:1px solid #58e1c3;outline-offset:-1px}"
+    },
+    {
+      "name": "Rewind History Meter",
+      "kind": "custom",
+      "refersTo": "rewind-rail",
+      "description": "Design-panel translation of ThreadMeter: a flat 140 by 2 logical-pixel rail, a proportional teal fill and a separate stored-seconds label. The sample shows 3.6 seconds of six available.",
+      "html": "<div class=\"ds-rewind\"><span class=\"ds-rewind-label\">3.6 s rewind</span><div class=\"ds-rewind-rail\" role=\"meter\" aria-label=\"Stored rewind history\" aria-valuemin=\"0\" aria-valuemax=\"6\" aria-valuenow=\"3.6\"><span class=\"ds-rewind-fill\"></span></div></div>",
+      "css": ".ds-rewind{width:140px;color:#58e1c3;font-family:Manrope,sans-serif;font-size:8px;font-weight:550}.ds-rewind-label{display:block;height:13px}.ds-rewind-rail{width:140px;height:2px;background:#304851}.ds-rewind-fill{display:block;width:60%;height:2px;background:#58e1c3}"
+    }
+  ],
+  "narrative": {
+    "northStar": "Carry the last signal.",
+    "overview": "The signal's thread connects the game identity to its mechanics. Use crisp native vector geometry and a quiet night-time facility. The opening screen pairs condensed lettering with the actual courier's visual grammar and one flowing teal scarf. Threadwork reuses the same visual world rather than introducing another style.\n\nThis records the implemented native Godot system. The project has no approved raster comp, FORM seed or QUALITY BAR card.",
+    "keyCharacteristics": [
+      "Native vector geometry with quiet architectural depth.",
+      "A continuous teal thread shared by identity and functional tools.",
+      "Distinct silhouettes for the courier, hazards, terminals and fragments."
+    ],
+    "rules": [],
+    "dos": [
+      "Do keep the courier, landing edges, dangerous silhouettes and thread states readable first.",
+      "Do use the same vocabulary in the HUD, lessons and settings.",
+      "Do preserve functional tool paths when reduced effects are enabled.",
+      "Do keep motion bounded and retry effects brief."
+    ],
+    "donts": [
+      "Don't replace actionable shapes with decoration or imply inactive dotted bridges are solid.",
+      "Don't add busy grids behind UI text or hide focus.",
+      "Don't cover lesson pit hazards with a bottom prompt strip.",
+      "Don't copy reference-game assets."
+    ]
+  }
+}

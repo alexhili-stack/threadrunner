@@ -1,0 +1,14 @@
+[gd_scene load_steps=2 format=3]
+[ext_resource type="Script" path="res://scripts/gameplay/level_root.gd" id="1"]
+[node name="CurrentLevel" type="Node2D"]
+script = ExtResource("1")
+level_id = "prototype_03"
+spawn = Vector2(40, 317)
+exit_position = Vector2(600, 308)
+fragment_position = Vector2(247, 230)
+platforms = Array[Rect2]([Rect2(0, 56, 16, 288), Rect2(624, 56, 16, 288), Rect2(16, 328, 608, 16), Rect2(180, 264, 144, 16)])
+spikes = Array[Rect2]([Rect2(184, 316, 96, 12)])
+movers = Array[Vector4]([])
+gates = Array[Rect2]([])
+route = Array[Vector2]([Vector2(150, 317), Vector2(233, 253), Vector2(358, 275), Vector2(600, 317)])
+purpose = "A short tap keeps your jump low."
