@@ -16,6 +16,8 @@ An empty-rewind hover bug was reproduced and fixed without changing the shared m
 
 Physical phones, Safari, physical controllers, subjective listening and full screen-reader compatibility were not tested. Godot canvas menus have accessibility limits. The existing Windows 1.2 release below is a separate frozen artifact.
 
+The refined browser build is live at https://alexhili-stack.github.io/threadrunner/. [GitHub Actions run 42294765639](https://github.com/alexhili-stack/threadrunner/actions/runs/42294765639) built and deployed commit `0f4bb72375aa9d2ae690b6959f7808c978854ee5`. Hosted player, host script and game-pack hashes match its manifest; the WebAssembly response is HTTP 200 with application/wasm. Documentation-only commits do not rebuild the game.
+
 # Threadrunner 1.2.0 — verified build
 
 | Check | Result |
